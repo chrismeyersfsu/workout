@@ -16,6 +16,8 @@
 - `tests/setup.js` - Jest test setup and mocks configuration
 - `tests/utils.test.js` - Unit tests for utility functions
 - `tests/app.test.js` - Unit tests for main application controller
+- `js/exercises.js` - Exercise database with 31 bodyweight exercises and management functions
+- `tests/exercises.test.js` - Unit tests for exercise database operations
 - `assets/exercises/` - Directory containing exercise demonstration images/GIFs
 - `assets/audio/` - Directory containing audio files for workout cues
 - `tests/exercises.test.js` - Unit tests for exercise management
@@ -40,7 +42,7 @@
   - [x] 1.5 Set up Jest testing framework and basic test structure
   - [x] 1.6 Initialize main app controller with screen management
 
-- [ ] 2.0 Implement Exercise Database and Management System
+- [x] 2.0 Implement Exercise Database and Management System
   - [x] 2.1 Create exercise data structure with categories (upper body, lower body, core, full body, cardio)
   - [x] 2.2 Populate exercise database with comprehensive bodyweight exercises
   - [x] 2.3 Add exercise properties (name, instructions, image path, muscle groups)
@@ -50,14 +52,14 @@
   - [x] 2.7 Write unit tests for exercise database operations
 
 - [ ] 3.0 Build Workout Creation and Selection Interface
-  - [ ] 3.1 Create duration selection interface (10, 15, 20, 30 minutes)
-  - [ ] 3.2 Build quick-start workout interface with pre-built options
-  - [ ] 3.3 Implement custom workout builder with exercise selection
-  - [ ] 3.4 Add intelligent workout generation for incomplete selections
-  - [ ] 3.5 Create workout preview screen showing selected exercises
-  - [ ] 3.6 Implement workout saving functionality with custom names
-  - [ ] 3.7 Build saved workouts management interface
-  - [ ] 3.8 Write unit tests for workout creation logic
+  - [x] 3.1 Create duration selection interface (10, 15, 20, 30 minutes)
+  - [x] 3.2 Build quick-start workout interface with pre-built options
+  - [x] 3.3 Implement custom workout builder with exercise selection
+  - [x] 3.4 Add intelligent workout generation for incomplete selections
+  - [x] 3.5 Create workout preview screen showing selected exercises
+  - [x] 3.6 Implement workout saving functionality with custom names
+  - [x] 3.7 Build saved workouts management interface
+  - [x] 3.8 Write unit tests for workout creation logic
 
 - [ ] 4.0 Develop Timer and Workout Execution Engine
   - [ ] 4.1 Implement precise countdown timer with drift prevention
