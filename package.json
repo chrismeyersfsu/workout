@@ -1,0 +1,39 @@
+{
+  "name": "hiit-workout-app",
+  "version": "1.0.0",
+  "description": "A mobile-friendly HIIT workout application with bodyweight exercises",
+  "main": "index.html",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "serve": "python3 -m http.server 8000"
+  },
+  "keywords": [
+    "hiit",
+    "workout",
+    "fitness",
+    "bodyweight",
+    "mobile",
+    "pwa"
+  ],
+  "author": "HIIT Workout App Team",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": ["<rootDir>/tests/setup.js"],
+    "collectCoverageFrom": [
+      "js/**/*.js",
+      "!js/**/*.test.js"
+    ],
+    "coverageDirectory": "coverage",
+    "coverageReporters": ["text", "lcov", "html"],
+    "testMatch": [
+      "**/tests/**/*.test.js"
+    ]
+  }
+}

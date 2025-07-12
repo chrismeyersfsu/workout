@@ -1,0 +1,461 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f5f5f5;
+    overflow-x: hidden;
+    /* Improve touch scrolling on mobile */
+    -webkit-overflow-scrolling: touch;
+    /* Prevent zoom on double tap */
+    touch-action: manipulation;
+}
+
+/* App Container */
+#app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Screen Management */
+.screen {
+    display: none;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+}
+
+.screen.active {
+    display: flex;
+}
+
+/* Header Layout */
+header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+header h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Main Content Layout */
+main {
+    flex: 1;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 600px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Button Styles - Mobile-First Touch-Friendly */
+.primary-btn,
+.secondary-btn,
+.duration-btn,
+.filter-btn,
+.control-btn,
+.back-btn,
+.end-btn {
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    /* Touch-friendly minimum sizes (44px Apple, 48px Material Design) */
+    min-height: 48px;
+    min-width: 48px;
+    padding: 14px 24px;
+    /* Improve touch response */
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    /* Ensure adequate spacing between touch targets */
+    margin: 4px 0;
+}
+
+.primary-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.secondary-btn {
+    background: white;
+    color: #667eea;
+    border: 2px solid #667eea;
+}
+
+.secondary-btn:hover {
+    background: #667eea;
+    color: white;
+}
+
+.back-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 8px 16px;
+    min-height: 40px;
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.end-btn {
+    background: #ff4757;
+    color: white;
+    padding: 8px 16px;
+    min-height: 40px;
+}
+
+.end-btn:hover {
+    background: #ff3742;
+}
+
+/* Duration Selection Layout */
+.duration-selection {
+    text-align: center;
+}
+
+.duration-selection h2 {
+    margin-bottom: 1.5rem;
+    color: #333;
+    font-size: 1.25rem;
+}
+
+.duration-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.duration-btn {
+    background: white;
+    color: #667eea;
+    border: 2px solid #e0e6ff;
+    font-size: 1.1rem;
+    /* Increased height for better touch targets */
+    min-height: 64px;
+    height: 64px;
+    /* Better spacing for touch */
+    margin: 6px 0;
+}
+
+.duration-btn:hover,
+.duration-btn.selected {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+/* Workout Options Layout */
+.workout-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Exercise Filters Layout */
+.exercise-filters {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.filter-btn {
+    background: white;
+    color: #667eea;
+    border: 1px solid #e0e6ff;
+    padding: 8px 16px;
+    min-height: 40px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+    background: #667eea;
+    color: white;
+}
+
+/* Exercise Grid Layout */
+.exercise-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.exercise-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+    /* Touch-friendly minimum size */
+    min-height: 200px;
+    /* Improve touch response */
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    /* Better spacing between touch targets */
+    margin: 4px 0;
+}
+
+.exercise-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+.exercise-card.selected {
+    border-color: #667eea;
+    background: #f8f9ff;
+}
+
+.exercise-card img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+}
+
+.exercise-card h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.exercise-card p {
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.4;
+}
+
+/* Selection Controls */
+.selection-controls {
+    position: sticky;
+    bottom: 1rem;
+    background: white;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 -2px 20px rgba(0,0,0,0.1);
+    margin-top: 2rem;
+}
+
+/* Preview Controls */
+.preview-controls {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.preview-controls button {
+    flex: 1;
+}
+
+/* Workout Progress */
+.workout-progress {
+    color: white;
+    font-weight: 600;
+}
+
+/* Lists Layout */
+.workout-list,
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.workout-item,
+.history-item {
+    background: white;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.workout-item:hover,
+.history-item:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+/* Stats Display */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.stat-card .number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #667eea;
+    display: block;
+}
+
+.stat-card .label {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 0.5rem;
+}
+
+/* Mobile-First Responsive Design */
+/* Base styles are mobile-first, these are mobile-specific overrides */
+@media (max-width: 480px) {
+    main {
+        padding: 1rem;
+        gap: 1.5rem;
+    }
+    
+    .duration-buttons {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+    }
+    
+    .duration-btn {
+        /* Larger touch targets on small screens */
+        min-height: 72px;
+        height: 72px;
+        font-size: 1.2rem;
+    }
+    
+    .exercise-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .exercise-card {
+        /* Larger cards on mobile for easier interaction */
+        min-height: 220px;
+        padding: 1.25rem;
+    }
+    
+    .preview-controls {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .preview-controls button {
+        min-height: 56px;
+        font-size: 1.1rem;
+    }
+    
+    header {
+        padding: 0.75rem 1rem;
+    }
+    
+    header h1 {
+        font-size: 1.25rem;
+    }
+    
+    /* Increase touch target sizes for mobile */
+    .primary-btn,
+    .secondary-btn {
+        min-height: 56px;
+        padding: 16px 24px;
+        font-size: 1.1rem;
+    }
+    
+    .filter-btn {
+        min-height: 48px;
+        padding: 12px 20px;
+    }
+    
+    /* Ensure adequate spacing between interactive elements */
+    .workout-options {
+        gap: 1.25rem;
+    }
+    
+    .exercise-filters {
+        gap: 0.75rem;
+        padding-bottom: 0.75rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .duration-buttons {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .workout-options {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+}
+
+/* Focus and Accessibility */
+button:focus,
+.exercise-card:focus {
+    outline: 2px solid #667eea;
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .primary-btn {
+        background: #000;
+        border: 2px solid #fff;
+    }
+    
+    .secondary-btn {
+        border-width: 3px;
+    }
+}

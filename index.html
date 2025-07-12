@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HIIT Workout App</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/workout.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Home Screen -->
+        <div id="home-screen" class="screen active">
+            <header>
+                <h1>HIIT Workout</h1>
+            </header>
+            <main>
+                <div class="duration-selection">
+                    <h2>Select Workout Duration</h2>
+                    <div class="duration-buttons">
+                        <button class="duration-btn" data-duration="10">10 min</button>
+                        <button class="duration-btn" data-duration="15">15 min</button>
+                        <button class="duration-btn" data-duration="20">20 min</button>
+                        <button class="duration-btn" data-duration="30">30 min</button>
+                    </div>
+                </div>
+                <div class="workout-options">
+                    <button id="quick-start-btn" class="primary-btn">Quick Start</button>
+                    <button id="custom-workout-btn" class="secondary-btn">Custom Workout</button>
+                    <button id="saved-workouts-btn" class="secondary-btn">Saved Workouts</button>
+                    <button id="history-btn" class="secondary-btn">History</button>
+                </div>
+            </main>
+        </div>
+
+        <!-- Exercise Selection Screen -->
+        <div id="exercise-selection-screen" class="screen">
+            <header>
+                <button id="back-to-home" class="back-btn">← Back</button>
+                <h1>Select Exercises</h1>
+            </header>
+            <main>
+                <div class="exercise-filters">
+                    <button class="filter-btn active" data-category="all">All</button>
+                    <button class="filter-btn" data-category="upper">Upper Body</button>
+                    <button class="filter-btn" data-category="lower">Lower Body</button>
+                    <button class="filter-btn" data-category="core">Core</button>
+                    <button class="filter-btn" data-category="cardio">Cardio</button>
+                </div>
+                <div id="exercise-list" class="exercise-grid">
+                    <!-- Exercises will be populated by JavaScript -->
+                </div>
+                <div class="selection-controls">
+                    <button id="preview-workout-btn" class="primary-btn">Preview Workout</button>
+                </div>
+            </main>
+        </div>
+
+        <!-- Workout Preview Screen -->
+        <div id="workout-preview-screen" class="screen">
+            <header>
+                <button id="back-to-selection" class="back-btn">← Back</button>
+                <h1>Workout Preview</h1>
+            </header>
+            <main>
+                <div id="workout-summary">
+                    <!-- Workout details will be populated by JavaScript -->
+                </div>
+                <div class="preview-controls">
+                    <button id="save-workout-btn" class="secondary-btn">Save Workout</button>
+                    <button id="start-workout-btn" class="primary-btn">Start Workout</button>
+                </div>
+            </main>
+        </div>
+
+        <!-- Workout Execution Screen -->
+        <div id="workout-screen" class="screen">
+            <header>
+                <button id="end-workout-btn" class="end-btn">End</button>
+                <div class="workout-progress">
+                    <span id="current-exercise-num">1</span> / <span id="total-exercises">8</span>
+                </div>
+            </header>
+            <main class="workout-main">
+                <div class="timer-display">
+                    <div id="timer-countdown" class="timer">00:20</div>
+                    <div id="timer-label" class="timer-label">WORK</div>
+                </div>
+                <div class="exercise-display">
+                    <div id="exercise-image" class="exercise-image">
+                        <img src="" alt="Exercise demonstration" id="exercise-img">
+                    </div>
+                    <div id="exercise-name" class="exercise-name">Push-ups</div>
+                    <div id="exercise-instructions" class="exercise-instructions">
+                        Keep your body straight and lower yourself until your chest nearly touches the floor.
+                    </div>
+                </div>
+                <div class="workout-controls">
+                    <button id="pause-btn" class="control-btn">Pause</button>
+                    <button id="skip-btn" class="control-btn">Skip</button>
+                </div>
+            </main>
+        </div>
+
+        <!-- Saved Workouts Screen -->
+        <div id="saved-workouts-screen" class="screen">
+            <header>
+                <button id="back-to-home-saved" class="back-btn">← Back</button>
+                <h1>Saved Workouts</h1>
+            </header>
+            <main>
+                <div id="saved-workouts-list">
+                    <!-- Saved workouts will be populated by JavaScript -->
+                </div>
+            </main>
+        </div>
+
+        <!-- History Screen -->
+        <div id="history-screen" class="screen">
+            <header>
+                <button id="back-to-home-history" class="back-btn">← Back</button>
+                <h1>Workout History</h1>
+            </header>
+            <main>
+                <div id="workout-stats">
+                    <!-- Stats will be populated by JavaScript -->
+                </div>
+                <div id="history-list">
+                    <!-- History will be populated by JavaScript -->
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/exercises.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/timer.js"></script>
+    <script src="js/workouts.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
