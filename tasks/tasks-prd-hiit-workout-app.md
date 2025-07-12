@@ -32,7 +32,7 @@
 
 ## Tasks
 
-- [ ] 1.0 Create Core Application Structure and Setup
+- [x] 1.0 Create Core Application Structure and Setup
   - [x] 1.1 Create basic HTML structure with mobile viewport meta tag
   - [x] 1.2 Set up CSS Grid/Flexbox layout for responsive design
   - [x] 1.3 Implement mobile-first CSS with touch-friendly button sizes
@@ -41,13 +41,13 @@
   - [x] 1.6 Initialize main app controller with screen management
 
 - [ ] 2.0 Implement Exercise Database and Management System
-  - [ ] 2.1 Create exercise data structure with categories (upper body, lower body, core, full body, cardio)
-  - [ ] 2.2 Populate exercise database with comprehensive bodyweight exercises
-  - [ ] 2.3 Add exercise properties (name, instructions, image path, muscle groups)
-  - [ ] 2.4 Implement exercise filtering and search functionality
-  - [ ] 2.5 Create exercise display component with image and instructions
-  - [ ] 2.6 Add exercise selection interface for custom workouts
-  - [ ] 2.7 Write unit tests for exercise database operations
+  - [x] 2.1 Create exercise data structure with categories (upper body, lower body, core, full body, cardio)
+  - [x] 2.2 Populate exercise database with comprehensive bodyweight exercises
+  - [x] 2.3 Add exercise properties (name, instructions, image path, muscle groups)
+  - [x] 2.4 Implement exercise filtering and search functionality
+  - [x] 2.5 Create exercise display component with image and instructions
+  - [x] 2.6 Add exercise selection interface for custom workouts
+  - [x] 2.7 Write unit tests for exercise database operations
 
 - [ ] 3.0 Build Workout Creation and Selection Interface
   - [ ] 3.1 Create duration selection interface (10, 15, 20, 30 minutes)
