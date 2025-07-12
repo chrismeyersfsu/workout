@@ -1,83 +1,62 @@
-# Task List: HIIT Workout App Implementation
+# Tasks for HIIT Workout App Implementation
 
 ## Relevant Files
 
-- `index.html` - Main HTML file for the single-page application
-- `styles/main.css` - Primary stylesheet for mobile-responsive design
-- `styles/workout.css` - Specific styles for workout execution interface
-- `js/app.js` - Main application controller and initialization
-- `js/exercises.js` - Exercise database and management functions
-- `js/workouts.js` - Workout creation, selection, and generation logic
-- `js/timer.js` - Timer functionality and workout execution engine
-- `js/storage.js` - Local storage operations for persistence and history
-- `js/audio.js` - Audio cue management for countdown alerts
-- `js/utils.js` - Utility functions for common operations
-- `package.json` - Node.js package configuration and Jest setup
-- `tests/setup.js` - Jest test setup and mocks configuration
-- `tests/utils.test.js` - Unit tests for utility functions
-- `tests/app.test.js` - Unit tests for main application controller
-- `js/exercises.js` - Exercise database with 31 bodyweight exercises and management functions
-- `tests/exercises.test.js` - Unit tests for exercise database operations
-- `assets/exercises/` - Directory containing exercise demonstration images/GIFs
-- `assets/audio/` - Directory containing audio files for workout cues
-- `tests/exercises.test.js` - Unit tests for exercise management
-- `tests/workouts.test.js` - Unit tests for workout creation logic
-- `tests/timer.test.js` - Unit tests for timer functionality
-- `tests/storage.test.js` - Unit tests for data persistence
+- `src/data/exercises.md` - Markdown file containing the exercise database with categorized bodyweight exercises
+- `src/data/workouts.js` - Pre-built workout configurations for quick-start options
+- `src/components/WorkoutSelector.jsx` - Component for selecting workout style (Tabata/HIIT) and duration
+- `src/components/ExerciseSelector.jsx` - Component for custom workout creation and exercise selection
+- `src/components/WorkoutTimer.jsx` - Main timer component with exercise display and controls
+- `src/components/ExerciseDisplay.jsx` - Component showing current exercise, image, and instructions
+- `src/utils/workoutGenerator.js` - Logic for generating balanced workouts and exercise selection
+- `src/utils/timerUtils.js` - Timer functionality and interval calculations
+- `src/utils/audioUtils.js` - Audio countdown alerts and cues
+- `src/hooks/useWorkoutTimer.js` - Custom hook for managing workout state and timing
+- `src/styles/mobile.css` - Mobile-optimized responsive styles
+- `public/images/exercises/` - Directory for exercise demonstration images/GIFs
 
 ### Notes
 
-- Unit tests should be placed in a dedicated `tests/` directory
-- Use `npx jest [optional/path/to/test/file]` to run tests
-- Exercise images should be optimized for fast mobile loading
-- Audio files should be brief and clear for workout environments
+- Unit tests should typically be placed alongside the code files they are testing (e.g., `WorkoutTimer.jsx` and `WorkoutTimer.test.jsx` in the same directory).
+- Use `npx jest [optional/path/to/test/file]` to run tests. Running without a path executes all tests found by the Jest configuration.
+- Exercise images should be optimized for mobile loading and stored in categorized subdirectories.
 
 ## Tasks
 
-- [x] 1.0 Create Core Application Structure and Setup
-  - [x] 1.1 Create basic HTML structure with mobile viewport meta tag
-  - [x] 1.2 Set up CSS Grid/Flexbox layout for responsive design
-  - [x] 1.3 Implement mobile-first CSS with touch-friendly button sizes
-  - [x] 1.4 Create main navigation structure between app screens
-  - [x] 1.5 Set up Jest testing framework and basic test structure
-  - [x] 1.6 Initialize main app controller with screen management
+- [ ] 1.0 Set up Exercise Database and Data Management
+  - [x] 1.1 Create markdown file structure for exercise database with categories (upper body, lower body, core, full body, cardio)
+  - [x] 1.2 Populate exercise database with comprehensive bodyweight exercises including names, descriptions, and image references
+  - [x] 1.3 Implement exercise data parser to convert markdown to JavaScript objects
+  - [x] 1.4 Create utility functions for filtering exercises by category and selecting random exercises
+  - [x] 1.5 Add exercise validation to ensure all required fields are present
 
-- [x] 2.0 Implement Exercise Database and Management System
-  - [x] 2.1 Create exercise data structure with categories (upper body, lower body, core, full body, cardio)
-  - [x] 2.2 Populate exercise database with comprehensive bodyweight exercises
-  - [x] 2.3 Add exercise properties (name, instructions, image path, muscle groups)
-  - [x] 2.4 Implement exercise filtering and search functionality
-  - [x] 2.5 Create exercise display component with image and instructions
-  - [x] 2.6 Add exercise selection interface for custom workouts
-  - [x] 2.7 Write unit tests for exercise database operations
+- [ ] 2.0 Implement Workout Selection Interface
+  - [ ] 2.1 Create workout style selector component (Tabata vs HIIT) with clear visual differentiation
+  - [ ] 2.2 Implement duration selection (10, 15, 20, 30 minutes) with mobile-friendly buttons
+  - [ ] 2.3 Build quick-start workout grid displaying 10 pre-built Tabata and 10 HIIT workouts
+  - [ ] 2.4 Create workout preview functionality showing exercise list and timing structure
+  - [ ] 2.5 Implement navigation between workout selection and custom creation modes
 
-- [ ] 3.0 Build Workout Creation and Selection Interface
-  - [x] 3.1 Create duration selection interface (10, 15, 20, 30 minutes)
-  - [x] 3.2 Build quick-start workout interface with pre-built options
-  - [x] 3.3 Implement custom workout builder with exercise selection
-  - [x] 3.4 Add intelligent workout generation for incomplete selections
-  - [x] 3.5 Create workout preview screen showing selected exercises
-  - [x] 3.6 Implement workout saving functionality with custom names
-  - [x] 3.7 Build saved workouts management interface
-  - [x] 3.8 Write unit tests for workout creation logic
+- [ ] 3.0 Build Custom Workout Creator
+  - [ ] 3.1 Design exercise selection interface with category filtering and search functionality
+  - [ ] 3.2 Implement drag-and-drop or tap-to-add exercise selection for mobile devices
+  - [ ] 3.3 Create selected exercise list with reordering and removal capabilities
+  - [ ] 3.4 Build intelligent workout generator to fill remaining time when user hasn't selected enough exercises
+  - [ ] 3.5 Add workout validation to ensure balanced muscle group distribution
+  - [ ] 3.6 Implement save/load functionality for custom workouts using local storage
 
-- [ ] 4.0 Develop Timer and Workout Execution Engine
-  - [ ] 4.1 Implement precise countdown timer with drift prevention
-  - [ ] 4.2 Create Tabata-style interval system (20s work, 10s rest)
-  - [ ] 4.3 Add customizable work/rest interval options
-  - [ ] 4.4 Build workout execution interface with large timer display
-  - [ ] 4.5 Implement exercise display during workout (name, image, instructions)
-  - [ ] 4.6 Add workout navigation controls (pause, resume, skip, end early)
-  - [ ] 4.7 Create audio countdown alerts and transition cues
-  - [ ] 4.8 Implement workout progress tracking and completion detection
-  - [ ] 4.9 Write unit tests for timer accuracy and workout flow
+- [ ] 4.0 Develop Core Timer and Exercise Display System
+  - [ ] 4.1 Create accurate countdown timer with precise interval timing (20s work, 10s rest for Tabata)
+  - [ ] 4.2 Implement exercise display component showing current exercise name, image, and instructions
+  - [ ] 4.3 Build workout navigation controls (pause, resume, skip, end workout)
+  - [ ] 4.4 Create exercise transition animations and visual countdown indicators
+  - [ ] 4.5 Implement workout progress tracking showing current exercise, round, and overall progress
+  - [ ] 4.6 Add rest period displays with longer breaks between exercise circuits
 
-- [ ] 5.0 Implement Data Persistence and History Tracking
-  - [ ] 5.1 Set up localStorage operations for browser persistence
-  - [ ] 5.2 Implement custom workout saving and loading
-  - [ ] 5.3 Create workout history tracking with date/time stamps
-  - [ ] 5.4 Build workout history display interface
-  - [ ] 5.5 Add workout statistics (total workouts, time exercised)
-  - [ ] 5.6 Implement data export/import functionality for backup
-  - [ ] 5.7 Handle localStorage quota limits and cleanup
-  - [ ] 5.8 Write unit tests for data persistence operations
+- [ ] 5.0 Implement Mobile-Optimized UI and Audio Features
+  - [ ] 5.1 Design responsive mobile-first layout with thumb-friendly navigation and large touch targets
+  - [ ] 5.2 Implement high-contrast timer display optimized for readability during intense activity
+  - [ ] 5.3 Create audio countdown alerts for exercise transitions and interval changes
+  - [ ] 5.4 Optimize exercise images for fast mobile loading with appropriate compression
+  - [ ] 5.5 Ensure smooth performance across modern mobile browsers (Chrome, Safari, Firefox)
+  - [ ] 5.6 Add visual hierarchy emphasizing current exercise and timer information

@@ -26,25 +26,23 @@ This document outlines the requirements for a mobile-friendly HIIT (High-Intensi
 
 ## Functional Requirements
 
-1. **Workout Duration Selection**: The app must provide workout options for 10, 15, 20, and 30-minute durations.
+1. **Workout Style Selection**: The app must allow users to select their preferred workout style (Tabata or HIIT), which determines the workout duration and timing structure.
 
-2. **Exercise Database**: The app must maintain a comprehensive library of bodyweight exercises categorized by muscle groups (upper body, lower body, core, full body, cardio).
+2. **Exercise Database**: The app must maintain a comprehensive library of bodyweight exercises categorized by muscle groups (upper body, lower body, core, full body, cardio). The exercise database must be sourced from a markdown file that can be easily edited to add or remove exercises.
 
-3. **Quick-Start Workouts**: The app must provide pre-built HIIT workouts for each duration that users can start immediately.
+3. **Quick-Start Workouts**: The app must provide 10 pre-built HIIT workouts and 10 pre-built Tabata workouts that users can select from and start immediately.
 
 4. **Custom Workout Builder**: The app must allow users to select individual exercises from the database to create personalized workouts.
 
-5. **Intelligent Workout Generation**: The app must automatically generate balanced workouts when users haven't selected enough exercises to fill their chosen duration.
+5. **Intelligent Workout Generation**: The app must automatically generate balanced workouts when users haven't selected enough exercises to fill their chosen workout style's duration.
 
-6. **Timer Functionality**: The app must provide both Tabata-style intervals (20 seconds work, 10 seconds rest) and customizable work/rest intervals.
+6. **Timer Functionality**: The app must provide Tabata-style intervals (20 seconds work, 10 seconds rest) for Tabata workouts and longer intervals for HIIT workouts with customizable work/rest periods.
 
 7. **Exercise Display**: The app must continuously display the current exercise name, demonstration image/GIF, and countdown timer on screen during workouts.
 
 8. **Mobile Optimization**: The app must be fully responsive and optimized for mobile devices with touch-friendly controls.
 
-9. **Workout Persistence**: The app must save custom workouts created by users for future use.
 
-10. **History Tracking**: The app must record completed workout sessions with date, duration, and exercises performed.
 
 11. **Exercise Instructions**: The app must provide brief text instructions alongside visual demonstrations for each exercise.
 
@@ -74,7 +72,6 @@ This document outlines the requirements for a mobile-friendly HIIT (High-Intensi
 
 ## Technical Considerations
 
-- **Local Storage**: Use browser localStorage for workout persistence and history
 - **Image Optimization**: Compress exercise demonstration images for fast loading
 - **Performance**: Ensure smooth timer updates and transitions during high-intensity intervals
 - **Browser Compatibility**: Support modern mobile browsers (Chrome, Safari, Firefox)
@@ -84,9 +81,9 @@ This document outlines the requirements for a mobile-friendly HIIT (High-Intensi
 ## Open Questions
 
 1. **Exercise Pool Size**: What is the minimum number of exercises needed in each category for varied workouts?
-2. **Rest Between Rounds**: Should there be longer rest periods between full exercise circuits?
+2. **Rest Between Rounds**: Should there be longer rest periods between full exercise circuits? **RESOLVED: Yes** - Include longer rest periods between exercise circuits.
 3. **Warm-up/Cool-down**: Should the app include dedicated warm-up and cool-down phases? **RESOLVED: No** - Users are responsible for their own warm-up and cool-down routines.
 4. **Exercise Difficulty**: Should exercises have difficulty ratings to help with workout balance?
 5. **Audio Cues**: Would audio countdown alerts be valuable during workouts? **RESOLVED: Yes** - Added as functional requirement #13.
 6. **Exercise Substitutions**: Should the app suggest alternative exercises for users with limitations?
-7. **Workout Intensity**: Should users be able to adjust overall workout intensity/pace?
+7. **Workout Intensity**: Should users be able to adjust overall workout intensity/pace? **RESOLVED: No** - Workout intensity will remain fixed.
