@@ -29,6 +29,7 @@ export const useTabataTimer = (
   config: TabataTimerConfig = DEFAULT_CONFIG
 ): UseTabataTimerReturn => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const lastTickRef = useRef<number>(Date.now());
   
   const [timerState, setTimerState] = useState<TimerState>({
     isActive: false,
@@ -82,9 +83,16 @@ export const useTabataTimer = (
   const advanceTimer = useCallback(() => {
     setTimerState(prevState => {
       const newState = { ...prevState };
+      const now = Date.now();
+      const timeSinceLastTick = now - lastTickRef.current;
+      lastTickRef.current = now;
       
-      if (newState.timeRemaining > 1) {
-        newState.timeRemaining -= 1;
+      // Calculate how much time should advance based on actual elapsed time
+      // This helps maintain accuracy even if the tab becomes inactive
+      const timeToAdvance = Math.min(Math.round(timeSinceLastTick / 1000), newState.timeRemaining);
+      
+      if (newState.timeRemaining > timeToAdvance) {
+        newState.timeRemaining -= timeToAdvance;
         return newState;
       }
 
@@ -152,6 +160,7 @@ export const useTabataTimer = (
 
   const resetTimer = useCallback(() => {
     clearTimer();
+    lastTickRef.current = Date.now();
     setTimerState({
       isActive: false,
       isPaused: false,
@@ -165,6 +174,7 @@ export const useTabataTimer = (
   // Timer effect
   useEffect(() => {
     if (timerState.isActive && !timerState.isPaused && timerState.currentPhase !== 'finished') {
+      lastTickRef.current = Date.now();
       intervalRef.current = setInterval(advanceTimer, 1000);
     } else {
       clearTimer();
@@ -172,6 +182,19 @@ export const useTabataTimer = (
 
     return clearTimer;
   }, [timerState.isActive, timerState.isPaused, timerState.currentPhase, advanceTimer, clearTimer]);
+
+  // Handle visibility change to maintain accuracy when tab becomes active again
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden && timerState.isActive && !timerState.isPaused) {
+        // Reset last tick time when tab becomes visible to avoid large time jumps
+        lastTickRef.current = Date.now();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, [timerState.isActive, timerState.isPaused]);
 
   // Cleanup on unmount
   useEffect(() => {

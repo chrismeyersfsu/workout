@@ -2,6 +2,7 @@ import React from 'react';
 import { TabataWorkout } from '../types/workout';
 import { useTabataTimer } from '../hooks/useTabataTimer';
 import { useWorkoutProgress } from '../hooks/useWorkoutProgress';
+import { useAudioManager } from '../utils/audioManager';
 import { TabataTimer } from './TabataTimer';
 
 interface WorkoutSessionProps {
@@ -27,13 +28,20 @@ export const WorkoutSession: React.FC<WorkoutSessionProps> = ({
   } = useTabataTimer(workout);
 
   const { markWorkoutComplete, saveCurrentSession } = useWorkoutProgress([workout]);
+  const { settings: audioSettings, playCue, setEnabled, setVolume } = useAudioManager();
+  const [showAudioControls, setShowAudioControls] = React.useState(false);
+
+  // Track previous phase to detect transitions
+  const prevPhaseRef = React.useRef(timerState.currentPhase);
+  const prevTimeRemainingRef = React.useRef(timerState.timeRemaining);
 
   React.useEffect(() => {
     if (isWorkoutComplete && onWorkoutComplete) {
       markWorkoutComplete(workout.id);
+      playCue('workoutComplete');
       onWorkoutComplete();
     }
-  }, [isWorkoutComplete, onWorkoutComplete, markWorkoutComplete, workout.id]);
+  }, [isWorkoutComplete, onWorkoutComplete, markWorkoutComplete, workout.id, playCue]);
 
   // Auto-save progress as workout progresses
   React.useEffect(() => {
@@ -41,6 +49,42 @@ export const WorkoutSession: React.FC<WorkoutSessionProps> = ({
       saveCurrentSession(workout.id, timerState);
     }
   }, [timerState, workout.id, saveCurrentSession]);
+
+  // Audio cues for phase transitions and countdown
+  React.useEffect(() => {
+    const prevPhase = prevPhaseRef.current;
+    const prevTimeRemaining = prevTimeRemainingRef.current;
+    const currentPhase = timerState.currentPhase;
+    const currentTimeRemaining = timerState.timeRemaining;
+
+    // Phase transition audio cues
+    if (prevPhase !== currentPhase && timerState.isActive) {
+      switch (currentPhase) {
+        case 'work':
+          playCue('workStart');
+          break;
+        case 'rest':
+          playCue('restStart');
+          break;
+        case 'pairRest':
+          playCue('pairRestStart');
+          break;
+      }
+    }
+
+    // Countdown audio cues (last 3 seconds of work or rest, but not pairRest)
+    if (timerState.isActive && 
+        (currentPhase === 'work' || currentPhase === 'rest') &&
+        currentTimeRemaining <= 3 && 
+        currentTimeRemaining > 0 &&
+        prevTimeRemaining > currentTimeRemaining) {
+      playCue('countdown');
+    }
+
+    // Update refs
+    prevPhaseRef.current = currentPhase;
+    prevTimeRemainingRef.current = currentTimeRemaining;
+  }, [timerState.currentPhase, timerState.timeRemaining, timerState.isActive, playCue]);
 
   const getCurrentPair = () => {
     return workout.pairs[timerState.currentPairIndex];
@@ -244,7 +288,59 @@ export const WorkoutSession: React.FC<WorkoutSessionProps> = ({
             Do Again
           </button>
         )}
+
+        <div className="secondary-controls">
+          <button 
+            className="control-button audio-toggle-button" 
+            onClick={() => setShowAudioControls(!showAudioControls)}
+            title="Audio Settings"
+          >
+            🔊 Audio
+          </button>
+        </div>
       </div>
+
+      {showAudioControls && (
+        <div className="audio-controls">
+          <div className="audio-control-header">
+            <h3>Audio Settings</h3>
+            <button 
+              className="close-audio-controls" 
+              onClick={() => setShowAudioControls(false)}
+            >
+              ×
+            </button>
+          </div>
+          
+          <div className="audio-control-row">
+            <label className="audio-control-label">
+              <input
+                type="checkbox"
+                checked={audioSettings.enabled}
+                onChange={(e) => setEnabled(e.target.checked)}
+              />
+              Enable Sound Effects
+            </label>
+          </div>
+          
+          {audioSettings.enabled && (
+            <div className="audio-control-row">
+              <label className="audio-control-label">
+                Volume: {Math.round(audioSettings.volume * 100)}%
+              </label>
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.1"
+                value={audioSettings.volume}
+                onChange={(e) => setVolume(parseFloat(e.target.value))}
+                className="volume-slider"
+              />
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

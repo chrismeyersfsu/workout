@@ -5,15 +5,15 @@
 - `src/data/workouts.test.ts` - Unit tests for workout data validation
 - `src/components/WorkoutSelector.tsx` - Main workout selection interface component with preview functionality, completion tracking, and overall progress display
 - `src/components/WorkoutSelector.test.tsx` - Unit tests for workout selector
-- `src/components/TabataTimer.tsx` - Core timer component with visual countdown display and phase indicators
+- `src/components/TabataTimer.tsx` - Core timer component with visual countdown display and phase-based color indicators
 - `src/components/TabataTimer.test.tsx` - Unit tests for timer functionality
-- `src/components/WorkoutSession.tsx` - Main workout execution component with timer controls, exercise display, and enhanced progress indicators
+- `src/components/WorkoutSession.tsx` - Main workout execution component with timer controls, enhanced progress indicators, audio integration, and user controls
 - `src/components/WorkoutSession.test.tsx` - Unit tests for workout session
-- `src/hooks/useTabataTimer.ts` - Custom hook for timer logic with 20s/10s intervals and automatic transitions
+- `src/hooks/useTabataTimer.ts` - Custom hook for timer logic with 20s/10s intervals, automatic transitions, and improved accuracy
 - `src/hooks/useTabataTimer.test.ts` - Unit tests for timer hook
 - `src/hooks/useWorkoutProgress.ts` - Custom hook for tracking workout completion with localStorage persistence
 - `src/hooks/useWorkoutProgress.test.ts` - Unit tests for progress tracking
-- `src/utils/audioManager.ts` - Audio cue management utilities
+- `src/utils/audioManager.ts` - Audio cue management utilities with Web Audio API integration, settings persistence, and comprehensive sound effects
 - `src/utils/audioManager.test.ts` - Unit tests for audio functionality
 
 ### Notes
@@ -45,9 +45,9 @@
   - [x] 4.2 Implement workout completion tracking across sessions
   - [x] 4.3 Add progress indicators showing current round and exercise pair
   - [x] 4.4 Create unit tests for progress tracking functionality
-- [ ] 5.0 Implement audio/visual cues and user controls
-  - [ ] 5.1 Create audioManager utility for workout interval sounds
-  - [ ] 5.2 Implement work/rest period visual indicators (colors)
-  - [ ] 5.3 Add audio controls (enable/disable sound)
-  - [ ] 5.4 Ensure timer accuracy and background execution
-  - [ ] 5.5 Create unit tests for audio and visual cue functionality
+- [x] 5.0 Implement audio/visual cues and user controls
+  - [x] 5.1 Create audioManager utility for workout interval sounds
+  - [x] 5.2 Implement work/rest period visual indicators (colors)
+  - [x] 5.3 Add audio controls (enable/disable sound)
+  - [x] 5.4 Ensure timer accuracy and background execution
+  - [x] 5.5 Create unit tests for audio and visual cue functionality
