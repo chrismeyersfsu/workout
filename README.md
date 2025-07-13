@@ -143,10 +143,6 @@ To add new workouts or exercises:
 4. Add tests if applicable
 5. Submit a pull request
 
-## License
-
-This project is open source and available under the [MIT License](LICENSE).
-
 ## Health and Safety
 
 - Consult with a healthcare provider before starting any new exercise program
