@@ -47,7 +47,7 @@
         </div>
       </div>
       
-      <div v-if="currentPhase === 'work' || currentPhase === 'rest'" class="exercise-display">
+      <div v-if="currentPhase === 'work'" class="exercise-display">
         <h2>{{ getCurrentExerciseName() }}</h2>
       </div>
       
