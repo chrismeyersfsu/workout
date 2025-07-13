@@ -3,7 +3,7 @@
 - `src/types/workout.ts` - TypeScript interfaces for workout-related data structures (Exercise, WorkoutPair, TabataWorkout, WorkoutProgress, TimerState)
 - `src/data/workouts.ts` - Contains the 8 predefined tabata workouts, exercise definitions, and validation functions
 - `src/data/workouts.test.ts` - Unit tests for workout data validation
-- `src/components/WorkoutSelector.tsx` - Main workout selection interface component
+- `src/components/WorkoutSelector.tsx` - Main workout selection interface component with preview functionality and completion tracking
 - `src/components/WorkoutSelector.test.tsx` - Unit tests for workout selector
 - `src/components/TabataTimer.tsx` - Core timer component for tabata intervals
 - `src/components/TabataTimer.test.tsx` - Unit tests for timer functionality
@@ -28,11 +28,11 @@
   - [x] 1.2 Define 8 predefined tabata workouts with exercise pairs
   - [x] 1.3 Implement data validation functions for workout structure
   - [x] 1.4 Create unit tests for workout data and validation functions
-- [ ] 2.0 Implement workout selection interface
-  - [ ] 2.1 Create WorkoutSelector component with list of 8 workouts
-  - [ ] 2.2 Implement workout preview functionality showing exercise pairs
-  - [ ] 2.3 Add workout completion status indicators
-  - [ ] 2.4 Create unit tests for workout selection component
+- [x] 2.0 Implement workout selection interface
+  - [x] 2.1 Create WorkoutSelector component with list of 8 workouts
+  - [x] 2.2 Implement workout preview functionality showing exercise pairs
+  - [x] 2.3 Add workout completion status indicators
+  - [x] 2.4 Create unit tests for workout selection component
 - [ ] 3.0 Build tabata timer and workout execution engine
   - [ ] 3.1 Create useTabataTimer hook with 20s/10s interval logic
   - [ ] 3.2 Implement WorkoutSession component for exercise execution
