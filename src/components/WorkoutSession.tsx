@@ -1,6 +1,7 @@
 import React from 'react';
 import { TabataWorkout } from '../types/workout';
 import { useTabataTimer } from '../hooks/useTabataTimer';
+import { useWorkoutProgress } from '../hooks/useWorkoutProgress';
 import { TabataTimer } from './TabataTimer';
 
 interface WorkoutSessionProps {
@@ -25,11 +26,21 @@ export const WorkoutSession: React.FC<WorkoutSessionProps> = ({
     progressPercentage
   } = useTabataTimer(workout);
 
+  const { markWorkoutComplete, saveCurrentSession } = useWorkoutProgress([workout]);
+
   React.useEffect(() => {
     if (isWorkoutComplete && onWorkoutComplete) {
+      markWorkoutComplete(workout.id);
       onWorkoutComplete();
     }
-  }, [isWorkoutComplete, onWorkoutComplete]);
+  }, [isWorkoutComplete, onWorkoutComplete, markWorkoutComplete, workout.id]);
+
+  // Auto-save progress as workout progresses
+  React.useEffect(() => {
+    if (timerState.isActive || timerState.isPaused) {
+      saveCurrentSession(workout.id, timerState);
+    }
+  }, [timerState, workout.id, saveCurrentSession]);
 
   const getCurrentPair = () => {
     return workout.pairs[timerState.currentPairIndex];
@@ -86,11 +97,46 @@ export const WorkoutSession: React.FC<WorkoutSessionProps> = ({
         </button>
       </div>
 
-      <div className="progress-bar">
-        <div 
-          className="progress-fill" 
-          style={{ width: `${progressPercentage}%` }}
-        />
+      <div className="progress-section">
+        <div className="progress-bar">
+          <div 
+            className="progress-fill" 
+            style={{ width: `${progressPercentage}%` }}
+          />
+          <div className="progress-text">
+            {Math.round(progressPercentage)}% Complete
+          </div>
+        </div>
+        
+        <div className="progress-indicators">
+          <div className="pair-indicators">
+            {workout.pairs.map((_, index) => (
+              <div 
+                key={index}
+                className={`pair-indicator ${
+                  index < timerState.currentPairIndex ? 'completed' : 
+                  index === timerState.currentPairIndex ? 'active' : 'pending'
+                }`}
+              >
+                <span className="pair-number">{index + 1}</span>
+              </div>
+            ))}
+          </div>
+          
+          <div className="round-indicators">
+            {Array.from({ length: workout.rounds }, (_, index) => (
+              <div 
+                key={index}
+                className={`round-indicator ${
+                  index < timerState.currentRound - 1 ? 'completed' : 
+                  index === timerState.currentRound - 1 ? 'active' : 'pending'
+                }`}
+              >
+                <span className="round-dot"></span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
       <div className="timer-section">

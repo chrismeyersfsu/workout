@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { TabataWorkout, WorkoutProgress } from '../types/workout';
 import { predefinedWorkouts } from '../data/workouts';
+import { useWorkoutProgress } from '../hooks/useWorkoutProgress';
 
 interface WorkoutSelectorProps {
   onWorkoutSelect: (workout: TabataWorkout) => void;
-  workoutProgress?: Record<string, WorkoutProgress>;
 }
 
 interface WorkoutCardProps {
@@ -105,11 +105,18 @@ const WorkoutPreview: React.FC<WorkoutPreviewProps> = ({ workout, onClose }) => 
 };
 
 export const WorkoutSelector: React.FC<WorkoutSelectorProps> = ({
-  onWorkoutSelect,
-  workoutProgress = {}
+  onWorkoutSelect
 }) => {
   const [selectedWorkoutId, setSelectedWorkoutId] = useState<string | null>(null);
   const [previewWorkout, setPreviewWorkout] = useState<TabataWorkout | null>(null);
+  
+  const { 
+    workoutProgress, 
+    isWorkoutCompleted, 
+    getCompletedWorkoutsCount,
+    getTotalWorkoutsCount,
+    getOverallProgress 
+  } = useWorkoutProgress(predefinedWorkouts);
 
   const handleWorkoutSelect = (workout: TabataWorkout) => {
     setSelectedWorkoutId(workout.id);
@@ -122,15 +129,29 @@ export const WorkoutSelector: React.FC<WorkoutSelectorProps> = ({
     }
   };
 
-  const isWorkoutCompleted = (workoutId: string): boolean => {
-    return workoutProgress[workoutId]?.isCompleted || false;
-  };
-
   return (
     <div className="workout-selector">
       <div className="selector-header">
         <h1>Choose Your Tabata Workout</h1>
         <p>Select a workout to get started with your training session</p>
+        
+        <div className="overall-progress">
+          <div className="progress-stats">
+            <span className="progress-label">Overall Progress:</span>
+            <span className="progress-count">
+              {getCompletedWorkoutsCount()} of {getTotalWorkoutsCount()} workouts completed
+            </span>
+          </div>
+          <div className="progress-bar-container">
+            <div className="progress-bar-overall">
+              <div 
+                className="progress-fill-overall" 
+                style={{ width: `${getOverallProgress()}%` }}
+              />
+            </div>
+            <span className="progress-percentage">{getOverallProgress()}%</span>
+          </div>
+        </div>
       </div>
 
       <div className="workout-grid">

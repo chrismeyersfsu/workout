@@ -3,15 +3,15 @@
 - `src/types/workout.ts` - TypeScript interfaces for workout-related data structures (Exercise, WorkoutPair, TabataWorkout, WorkoutProgress, TimerState)
 - `src/data/workouts.ts` - Contains the 8 predefined tabata workouts, exercise definitions, and validation functions
 - `src/data/workouts.test.ts` - Unit tests for workout data validation
-- `src/components/WorkoutSelector.tsx` - Main workout selection interface component with preview functionality and completion tracking
+- `src/components/WorkoutSelector.tsx` - Main workout selection interface component with preview functionality, completion tracking, and overall progress display
 - `src/components/WorkoutSelector.test.tsx` - Unit tests for workout selector
 - `src/components/TabataTimer.tsx` - Core timer component with visual countdown display and phase indicators
 - `src/components/TabataTimer.test.tsx` - Unit tests for timer functionality
-- `src/components/WorkoutSession.tsx` - Main workout execution component with timer controls and exercise display
+- `src/components/WorkoutSession.tsx` - Main workout execution component with timer controls, exercise display, and enhanced progress indicators
 - `src/components/WorkoutSession.test.tsx` - Unit tests for workout session
 - `src/hooks/useTabataTimer.ts` - Custom hook for timer logic with 20s/10s intervals and automatic transitions
 - `src/hooks/useTabataTimer.test.ts` - Unit tests for timer hook
-- `src/hooks/useWorkoutProgress.ts` - Custom hook for tracking workout completion
+- `src/hooks/useWorkoutProgress.ts` - Custom hook for tracking workout completion with localStorage persistence
 - `src/hooks/useWorkoutProgress.test.ts` - Unit tests for progress tracking
 - `src/utils/audioManager.ts` - Audio cue management utilities
 - `src/utils/audioManager.test.ts` - Unit tests for audio functionality
@@ -40,11 +40,11 @@
   - [x] 3.4 Implement automatic transitions between exercise pairs
   - [x] 3.5 Add start, pause, and stop workout controls
   - [x] 3.6 Create unit tests for timer logic and workout session
-- [ ] 4.0 Create workout progress tracking and completion system
-  - [ ] 4.1 Create useWorkoutProgress hook for local storage management
-  - [ ] 4.2 Implement workout completion tracking across sessions
-  - [ ] 4.3 Add progress indicators showing current round and exercise pair
-  - [ ] 4.4 Create unit tests for progress tracking functionality
+- [x] 4.0 Create workout progress tracking and completion system
+  - [x] 4.1 Create useWorkoutProgress hook for local storage management
+  - [x] 4.2 Implement workout completion tracking across sessions
+  - [x] 4.3 Add progress indicators showing current round and exercise pair
+  - [x] 4.4 Create unit tests for progress tracking functionality
 - [ ] 5.0 Implement audio/visual cues and user controls
   - [ ] 5.1 Create audioManager utility for workout interval sounds
   - [ ] 5.2 Implement work/rest period visual indicators (colors)
