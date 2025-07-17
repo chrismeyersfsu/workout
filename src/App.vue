@@ -19,6 +19,7 @@
             <span>{{ workout.pairs.length }} pairs</span>
             <span>{{ workout.rounds }} rounds</span>
             <span>{{ workout.restBetweenPairs }}s rest</span>
+            <span>{{ formatWorkoutDuration(calculateWorkoutDuration(workout)) }}</span>
           </div>
         </div>
       </div>
@@ -41,6 +42,12 @@
       <div class="timer-display">
         <div class="time">{{ formatTime(timeRemaining) }}</div>
         <div class="phase">{{ currentPhase.toUpperCase() }}</div>
+        <div v-if="currentPhase === 'rest'" class="rest-info">
+          Rest Time: {{ formatTime(timeRemaining) }}
+        </div>
+        <div v-if="currentPhase === 'pairRest'" class="rest-info">
+          Rest Between Pairs: {{ formatTime(timeRemaining) }}
+        </div>
         <div class="progress">
           Round {{ currentRound }} of {{ selectedWorkout.rounds }} | 
           Pair {{ currentPairIndex + 1 }} of {{ selectedWorkout.pairs.length }}
@@ -66,6 +73,7 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { predefinedWorkouts } from './data/workouts'
 import type { TabataWorkout } from './types/workout'
+import { calculateWorkoutDuration, formatWorkoutDuration } from './utils/workoutCalculations'
 
 const workouts = ref(predefinedWorkouts)
 const selectedWorkoutId = ref<string | null>(null)
@@ -304,6 +312,13 @@ onUnmounted(() => {
   font-size: 1.2em;
   color: #666;
   margin-bottom: 30px;
+}
+
+.rest-info {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #ffc107;
+  margin: 15px 0;
 }
 
 .exercise-display h2 {

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { TabataWorkout, WorkoutProgress } from '../types/workout';
 import { predefinedWorkouts } from '../data/workouts';
 import { useWorkoutProgress } from '../hooks/useWorkoutProgress';
+import { calculateWorkoutDuration, formatWorkoutDuration } from '../utils/workoutCalculations';
 
 interface WorkoutSelectorProps {
   onWorkoutSelect: (workout: TabataWorkout) => void;
@@ -35,7 +36,7 @@ const WorkoutCard: React.FC<WorkoutCardProps> = ({
       <div className="workout-details">
         <span className="detail-item">{workout.pairs.length} pairs</span>
         <span className="detail-item">{workout.rounds} rounds</span>
-        <span className="detail-item">{workout.restBetweenPairs}s rest</span>
+        <span className="detail-item">{formatWorkoutDuration(calculateWorkoutDuration(workout))}</span>
       </div>
       <button 
         className="preview-button"
@@ -72,7 +73,7 @@ const WorkoutPreview: React.FC<WorkoutPreviewProps> = ({ workout, onClose }) => 
             <strong>Rest between pairs:</strong> {workout.restBetweenPairs} seconds
           </div>
           <div className="detail">
-            <strong>Total time:</strong> ~{Math.ceil((workout.pairs.length * workout.rounds * 30 + workout.pairs.length * workout.restBetweenPairs) / 60)} minutes
+            <strong>Total time:</strong> {formatWorkoutDuration(calculateWorkoutDuration(workout))}
           </div>
         </div>
         <div className="exercise-pairs">

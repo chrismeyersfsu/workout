@@ -35,6 +35,8 @@ This feature will create a tabata workout application designed for intermediate 
 9. The system must display workout progress (current round, current exercise pair, overall workout progress).
 10. The system must automatically transition between exercise pairs within a workout session.
 11. The system must allow users to preview the complete exercise list for each workout before starting.
+12. The system must display the total workout time of each workout.
+13. The system must display the rest time of each workout.
 
 ## Non-Goals (Out of Scope)
 

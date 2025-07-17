@@ -15,6 +15,8 @@
 - `src/hooks/useWorkoutProgress.test.ts` - Unit tests for progress tracking
 - `src/utils/audioManager.ts` - Audio cue management utilities with Web Audio API integration, settings persistence, and comprehensive sound effects
 - `src/utils/audioManager.test.ts` - Unit tests for audio functionality
+- `src/utils/workoutCalculations.ts` - Utility functions for calculating total workout time and duration displays with proper tabata protocol timing
+- `src/utils/workoutCalculations.test.ts` - Unit tests for workout time calculations with comprehensive coverage
 
 ### Notes
 
@@ -32,7 +34,8 @@
   - [x] 2.1 Create WorkoutSelector component with list of 8 workouts
   - [x] 2.2 Implement workout preview functionality showing exercise pairs
   - [x] 2.3 Add workout completion status indicators
-  - [x] 2.4 Create unit tests for workout selection component
+  - [x] 2.4 Add total workout time display for each workout
+  - [x] 2.5 Create unit tests for workout selection component
 - [x] 3.0 Build tabata timer and workout execution engine
   - [x] 3.1 Create useTabataTimer hook with 20s/10s interval logic
   - [x] 3.2 Implement WorkoutSession component for exercise execution
@@ -51,3 +54,24 @@
   - [x] 5.3 Add audio controls (enable/disable sound)
   - [x] 5.4 Ensure timer accuracy and background execution
   - [x] 5.5 Create unit tests for audio and visual cue functionality
+- [x] 6.0 Implement workout time calculations and display
+  - [x] 6.1 Create workoutCalculations utility for total time computation
+  - [x] 6.2 Calculate workout duration based on exercise pairs and tabata protocol
+  - [x] 6.3 Display total workout time in workout selection interface
+  - [x] 6.4 Create unit tests for workout time calculation functions
+- [ ] 7.0 Add rest time calculation and display functionality
+  - [x] 7.1 Extend workoutCalculations utility to calculate total rest time per workout
+    - [x] 7.1.1 Add calculateRestTime function that computes rest intervals between exercise pairs
+    - [x] 7.1.2 Calculate total rest time: (pairs - 1) * 60 seconds + (pairs * 8 * 10 seconds)
+    - [x] 7.1.3 Format rest time display in minutes and seconds (e.g., "3m 20s")
+    - [x] 7.1.4 Export new rest time function from workoutCalculations module
+  - [ ] 7.2 Update WorkoutSelector component to display rest time alongside total time
+    - [ ] 7.2.1 Import calculateRestTime function into WorkoutSelector component
+    - [ ] 7.2.2 Add rest time display to workout card UI next to total time
+    - [ ] 7.2.3 Update component styling to accommodate both time displays
+    - [ ] 7.2.4 Ensure consistent formatting between total time and rest time displays
+  - [ ] 7.3 Create unit tests for rest time calculation functions
+    - [ ] 7.3.1 Add test cases for calculateRestTime with different workout pair counts
+    - [ ] 7.3.2 Verify rest time calculation accuracy against tabata protocol (10s rest per round)
+    - [ ] 7.3.3 Test rest time formatting for various durations
+    - [ ] 7.3.4 Add edge case tests for workouts with single exercise pairs
