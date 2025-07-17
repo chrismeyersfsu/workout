@@ -18,7 +18,7 @@
           <div class="workout-details">
             <span>{{ workout.pairs.length }} pairs</span>
             <span>{{ workout.rounds }} rounds</span>
-            <span>{{ workout.restBetweenPairs }}s rest</span>
+            <span>Rest: {{ workout.restBetweenPairs }}s</span>
             <span>{{ formatWorkoutDuration(calculateWorkoutDuration(workout)) }}</span>
           </div>
         </div>

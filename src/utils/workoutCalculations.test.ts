@@ -3,7 +3,9 @@ import {
   calculateWorkoutDuration,
   calculatePairDuration,
   formatWorkoutDuration,
-  getWorkoutBreakdown
+  getWorkoutBreakdown,
+  calculateRestTime,
+  formatRestTime
 } from './workoutCalculations';
 import { TabataWorkout } from '../types/workout';
 
@@ -195,6 +197,115 @@ describe('workoutCalculations', () => {
         pairs: 2,
         rounds: 1
       });
+    });
+  });
+
+  describe('calculateRestTime', () => {
+    test('should calculate correct rest time for standard workout', () => {
+      const restTime = calculateRestTime(mockWorkout);
+      // Rest within pairs: 2 pairs * (8-1) rounds * 10s = 140s
+      // Rest between pairs: (2-1) pairs * 60s = 60s
+      // Total: 140s + 60s = 200s
+      expect(restTime).toBe(200);
+    });
+
+    test('should calculate correct rest time for single pair workout', () => {
+      const singlePairWorkout = {
+        ...mockWorkout,
+        pairs: [mockWorkout.pairs[0]]
+      };
+      const restTime = calculateRestTime(singlePairWorkout);
+      // Rest within pairs: 1 pair * (8-1) rounds * 10s = 70s
+      // Rest between pairs: (1-1) pairs * 60s = 0s
+      // Total: 70s + 0s = 70s
+      expect(restTime).toBe(70);
+    });
+
+    test('should calculate correct rest time for single round workout', () => {
+      const singleRoundWorkout = {
+        ...mockWorkout,
+        rounds: 1
+      };
+      const restTime = calculateRestTime(singleRoundWorkout);
+      // Rest within pairs: 2 pairs * (1-1) rounds * 10s = 0s
+      // Rest between pairs: (2-1) pairs * 60s = 60s
+      // Total: 0s + 60s = 60s
+      expect(restTime).toBe(60);
+    });
+
+    test('should handle workout with different rest between pairs', () => {
+      const customRestWorkout = {
+        ...mockWorkout,
+        restBetweenPairs: 30
+      };
+      const restTime = calculateRestTime(customRestWorkout);
+      // Rest within pairs: 2 pairs * (8-1) rounds * 10s = 140s
+      // Rest between pairs: (2-1) pairs * 30s = 30s
+      // Total: 140s + 30s = 170s
+      expect(restTime).toBe(170);
+    });
+
+    test('should handle empty workout', () => {
+      const emptyWorkout = {
+        ...mockWorkout,
+        pairs: []
+      };
+      expect(calculateRestTime(emptyWorkout)).toBe(0);
+    });
+
+    test('should handle null/undefined workout', () => {
+      expect(calculateRestTime(null as any)).toBe(0);
+      expect(calculateRestTime(undefined as any)).toBe(0);
+    });
+
+    test('should handle workout with multiple pairs', () => {
+      const multiPairWorkout = {
+        ...mockWorkout,
+        pairs: [
+          ...mockWorkout.pairs,
+          { exerciseA: { name: 'Planks' }, exerciseB: { name: 'Mountain Climbers' } },
+          { exerciseA: { name: 'Jumping Jacks' }, exerciseB: { name: 'High Knees' } }
+        ]
+      };
+      const restTime = calculateRestTime(multiPairWorkout);
+      // Rest within pairs: 4 pairs * (8-1) rounds * 10s = 280s
+      // Rest between pairs: (4-1) pairs * 60s = 180s
+      // Total: 280s + 180s = 460s
+      expect(restTime).toBe(460);
+    });
+  });
+
+  describe('formatRestTime', () => {
+    test('should format seconds only for durations less than a minute', () => {
+      expect(formatRestTime(30)).toBe('30s');
+      expect(formatRestTime(45)).toBe('45s');
+      expect(formatRestTime(59)).toBe('59s');
+    });
+
+    test('should format minutes and seconds correctly', () => {
+      expect(formatRestTime(60)).toBe('1m');
+      expect(formatRestTime(90)).toBe('1m 30s');
+      expect(formatRestTime(125)).toBe('2m 5s');
+      expect(formatRestTime(200)).toBe('3m 20s');
+    });
+
+    test('should format minutes only when no remaining seconds', () => {
+      expect(formatRestTime(120)).toBe('2m');
+      expect(formatRestTime(180)).toBe('3m');
+      expect(formatRestTime(300)).toBe('5m');
+    });
+
+    test('should handle zero duration', () => {
+      expect(formatRestTime(0)).toBe('0s');
+    });
+
+    test('should handle negative duration', () => {
+      expect(formatRestTime(-10)).toBe('0s');
+    });
+
+    test('should handle large durations', () => {
+      expect(formatRestTime(3600)).toBe('60m');
+      expect(formatRestTime(3665)).toBe('61m 5s');
     });
   });
 });
