@@ -1,5 +1,3 @@
-import React from 'react';
-
 export interface AudioSettings {
   enabled: boolean;
   volume: number; // 0 to 1
@@ -66,6 +64,21 @@ class AudioManager {
     this.updateSettings({ volume: clampedVolume });
   }
 
+  public async initializeAudioOnUserInteraction(): Promise<void> {
+    if (!this.audioContext) {
+      this.initializeAudioContext();
+    }
+    
+    if (this.audioContext && this.audioContext.state === 'suspended') {
+      try {
+        await this.audioContext.resume();
+        console.log('Audio context initialized on user interaction');
+      } catch (error) {
+        console.warn('Failed to initialize audio on user interaction:', error);
+      }
+    }
+  }
+
   private async ensureAudioContext(): Promise<void> {
     if (!this.audioContext) {
       this.initializeAudioContext();
@@ -74,21 +87,29 @@ class AudioManager {
     if (this.audioContext && this.audioContext.state === 'suspended') {
       try {
         await this.audioContext.resume();
+        console.log('Audio context resumed successfully');
       } catch (error) {
         console.warn('Failed to resume audio context:', error);
+        throw error;
       }
     }
   }
 
   private createBeep(frequency: number, duration: number, type: OscillatorType = 'sine'): Promise<void> {
     return new Promise(async (resolve) => {
-      if (!this.settings.enabled || !this.audioContext) {
+      if (!this.settings.enabled) {
         resolve();
         return;
       }
 
       try {
         await this.ensureAudioContext();
+        
+        if (!this.audioContext) {
+          console.warn('Audio context not available');
+          resolve();
+          return;
+        }
 
         const oscillator = this.audioContext.createOscillator();
         const gainNode = this.audioContext.createGain();
@@ -107,6 +128,9 @@ class AudioManager {
         oscillator.stop(this.audioContext.currentTime + duration);
 
         oscillator.onended = () => resolve();
+        
+        // Fallback timeout in case onended doesn't fire
+        setTimeout(() => resolve(), (duration + 0.1) * 1000);
       } catch (error) {
         console.warn('Failed to create beep:', error);
         resolve();
@@ -203,33 +227,6 @@ class AudioManager {
 
 // Singleton instance
 export const audioManager = new AudioManager();
-
-// Hook for React components
-export const useAudioManager = () => {
-  const [settings, setSettings] = React.useState<AudioSettings>(audioManager.getSettings());
-
-  const updateAudioSettings = (newSettings: Partial<AudioSettings>) => {
-    audioManager.updateSettings(newSettings);
-    setSettings(audioManager.getSettings());
-  };
-
-  const playCue = (type: AudioCueType) => {
-    return audioManager.playCue(type);
-  };
-
-  const testAudio = () => {
-    return audioManager.testAudio();
-  };
-
-  return {
-    settings,
-    updateSettings: updateAudioSettings,
-    playCue,
-    testAudio,
-    setEnabled: (enabled: boolean) => updateAudioSettings({ enabled }),
-    setVolume: (volume: number) => updateAudioSettings({ volume })
-  };
-};
 
 // For non-React usage
 export { audioManager as default };

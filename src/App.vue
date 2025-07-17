@@ -64,16 +64,62 @@
         </button>
         <button v-if="isActive" @click="pauseTimer" class="control-button">Pause</button>
         <button v-if="isPaused || isActive" @click="resetTimer" class="control-button">Reset</button>
+        
+        <div class="audio-controls-section">
+          <button @click="toggleAudioControls" class="control-button audio-button">
+            🔊 Audio
+          </button>
+          
+          <div v-if="showAudioControls" class="audio-controls">
+            <div class="audio-control-header">
+              <h3>Audio Settings</h3>
+              <button @click="showAudioControls = false" class="close-button">×</button>
+            </div>
+            
+            <div class="audio-control-row">
+              <label>
+                <input
+                  type="checkbox"
+                  :checked="audioSettings.enabled"
+                  @change="setAudioEnabled($event.target.checked)"
+                />
+                Enable Sound Effects
+              </label>
+            </div>
+            
+            <div v-if="audioSettings.enabled" class="audio-control-row">
+              <label>
+                Volume: {{ Math.round(audioSettings.volume * 100) }}%
+              </label>
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.1"
+                :value="audioSettings.volume"
+                @input="setAudioVolume(parseFloat($event.target.value))"
+                class="volume-slider"
+              />
+            </div>
+            
+            <div v-if="audioSettings.enabled" class="audio-control-row">
+              <button @click="testAudio" class="control-button test-audio-button">
+                Test Audio
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { predefinedWorkouts } from './data/workouts'
 import type { TabataWorkout } from './types/workout'
 import { calculateWorkoutDuration, formatWorkoutDuration } from './utils/workoutCalculations'
+import { audioManager } from './utils/audioManager'
 
 const workouts = ref(predefinedWorkouts)
 const selectedWorkoutId = ref<string | null>(null)
@@ -90,6 +136,13 @@ const isPaused = ref(false)
 const isFinished = ref(false)
 
 let intervalId: number | null = null
+
+// Audio settings
+const audioSettings = ref(audioManager.getSettings())
+const showAudioControls = ref(false)
+
+// Track previous phase for audio cues
+const previousPhase = ref<'work' | 'rest' | 'pairRest' | 'finished'>('work')
 
 const selectWorkout = (workoutId: string) => {
   selectedWorkoutId.value = workoutId
@@ -109,8 +162,11 @@ const exitWorkout = () => {
   selectedWorkoutId.value = null
 }
 
-const startTimer = () => {
+const startTimer = async () => {
   if (!selectedWorkout.value) return
+  
+  // Initialize audio on user interaction
+  await audioManager.initializeAudioOnUserInteraction()
   
   isActive.value = true
   isPaused.value = false
@@ -123,6 +179,12 @@ const startTimer = () => {
   intervalId = window.setInterval(() => {
     if (timeRemaining.value > 0) {
       timeRemaining.value--
+      
+      // Countdown audio for last 3 seconds of work or rest
+      if ((currentPhase.value === 'work' || currentPhase.value === 'rest') && 
+          timeRemaining.value <= 3 && timeRemaining.value > 0) {
+        audioManager.playCue('countdown')
+      }
     } else {
       nextPhase()
     }
@@ -160,20 +222,25 @@ const resetTimer = () => {
 const nextPhase = () => {
   if (!selectedWorkout.value) return
   
+  previousPhase.value = currentPhase.value
+  
   if (currentPhase.value === 'work') {
     currentPhase.value = 'rest'
     timeRemaining.value = 10
     currentExercise.value = currentExercise.value === 'A' ? 'B' : 'A'
+    audioManager.playCue('restStart')
   } else if (currentPhase.value === 'rest') {
     if (currentExercise.value === 'A') {
       currentPhase.value = 'work'
       timeRemaining.value = 20
+      audioManager.playCue('workStart')
     } else {
       if (currentRound.value < selectedWorkout.value.rounds) {
         currentRound.value++
         currentPhase.value = 'work'
         timeRemaining.value = 20
         currentExercise.value = 'A'
+        audioManager.playCue('workStart')
       } else {
         if (currentPairIndex.value < selectedWorkout.value.pairs.length - 1) {
           currentPairIndex.value++
@@ -181,9 +248,11 @@ const nextPhase = () => {
           currentPhase.value = 'pairRest'
           timeRemaining.value = selectedWorkout.value.restBetweenPairs
           currentExercise.value = 'A'
+          audioManager.playCue('pairRestStart')
         } else {
           currentPhase.value = 'finished'
           isFinished.value = true
+          audioManager.playCue('workoutComplete')
           stopTimer()
         }
       }
@@ -191,6 +260,7 @@ const nextPhase = () => {
   } else if (currentPhase.value === 'pairRest') {
     currentPhase.value = 'work'
     timeRemaining.value = 20
+    audioManager.playCue('workStart')
   }
 }
 
@@ -203,6 +273,29 @@ const getCurrentExerciseName = () => {
 
 const formatTime = (seconds: number) => {
   return seconds.toString().padStart(2, '0')
+}
+
+// Audio control functions
+const updateAudioSettings = (newSettings: any) => {
+  audioManager.updateSettings(newSettings)
+  audioSettings.value = audioManager.getSettings()
+}
+
+const setAudioEnabled = (enabled: boolean) => {
+  updateAudioSettings({ enabled })
+}
+
+const setAudioVolume = (volume: number) => {
+  updateAudioSettings({ volume })
+}
+
+const testAudio = async () => {
+  await audioManager.initializeAudioOnUserInteraction()
+  await audioManager.testAudio()
+}
+
+const toggleAudioControls = () => {
+  showAudioControls.value = !showAudioControls.value
 }
 
 onUnmounted(() => {
@@ -329,5 +422,89 @@ onUnmounted(() => {
 
 .controls {
   margin-top: 30px;
+}
+
+.audio-controls-section {
+  position: relative;
+  margin-top: 20px;
+}
+
+.audio-controls {
+  background: white;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 10px;
+  max-width: 400px;
+  margin: 10px auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.audio-control-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.audio-control-header h3 {
+  margin: 0;
+  font-size: 1.2em;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  cursor: pointer;
+  color: #666;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-button:hover {
+  color: #333;
+  background-color: #f5f5f5;
+  border-radius: 50%;
+}
+
+.audio-control-row {
+  margin-bottom: 15px;
+}
+
+.audio-control-row label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.volume-slider {
+  width: 100%;
+  margin-top: 5px;
+}
+
+.test-audio-button {
+  background-color: #28a745;
+  font-size: 14px;
+  padding: 8px 16px;
+}
+
+.test-audio-button:hover {
+  background-color: #218838;
+}
+
+.audio-button {
+  background-color: #6c757d;
+  font-size: 14px;
+}
+
+.audio-button:hover {
+  background-color: #5a6268;
 }
 </style>

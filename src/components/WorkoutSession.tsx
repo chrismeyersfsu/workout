@@ -28,7 +28,7 @@ export const WorkoutSession: React.FC<WorkoutSessionProps> = ({
   } = useTabataTimer(workout);
 
   const { markWorkoutComplete, saveCurrentSession } = useWorkoutProgress([workout]);
-  const { settings: audioSettings, playCue, setEnabled, setVolume } = useAudioManager();
+  const { settings: audioSettings, playCue, setEnabled, setVolume, initializeAudio, testAudio } = useAudioManager();
   const [showAudioControls, setShowAudioControls] = React.useState(false);
 
   // Track previous phase to detect transitions
@@ -123,6 +123,17 @@ export const WorkoutSession: React.FC<WorkoutSessionProps> = ({
     if (onWorkoutExit) {
       onWorkoutExit();
     }
+  };
+
+  const handleStartTimer = async () => {
+    // Initialize audio context on user interaction
+    await initializeAudio();
+    startTimer();
+  };
+
+  const handleTestAudio = async () => {
+    await initializeAudio();
+    await testAudio();
   };
 
   return (
@@ -256,7 +267,7 @@ export const WorkoutSession: React.FC<WorkoutSessionProps> = ({
         {!timerState.isActive && !isWorkoutComplete && (
           <button 
             className="control-button start-button" 
-            onClick={startTimer}
+            onClick={handleStartTimer}
           >
             {timerState.isPaused ? 'Resume' : 'Start'}
           </button>
@@ -324,20 +335,30 @@ export const WorkoutSession: React.FC<WorkoutSessionProps> = ({
           </div>
           
           {audioSettings.enabled && (
-            <div className="audio-control-row">
-              <label className="audio-control-label">
-                Volume: {Math.round(audioSettings.volume * 100)}%
-              </label>
-              <input
-                type="range"
-                min="0"
-                max="1"
-                step="0.1"
-                value={audioSettings.volume}
-                onChange={(e) => setVolume(parseFloat(e.target.value))}
-                className="volume-slider"
-              />
-            </div>
+            <>
+              <div className="audio-control-row">
+                <label className="audio-control-label">
+                  Volume: {Math.round(audioSettings.volume * 100)}%
+                </label>
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.1"
+                  value={audioSettings.volume}
+                  onChange={(e) => setVolume(parseFloat(e.target.value))}
+                  className="volume-slider"
+                />
+              </div>
+              <div className="audio-control-row">
+                <button 
+                  className="control-button test-audio-button" 
+                  onClick={handleTestAudio}
+                >
+                  Test Audio
+                </button>
+              </div>
+            </>
           )}
         </div>
       )}
