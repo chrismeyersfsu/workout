@@ -21,6 +21,17 @@
             <span>Rest: {{ workout.restBetweenPairs }}s</span>
             <span>{{ formatWorkoutDuration(calculateWorkoutDuration(workout)) }}</span>
           </div>
+          
+          <div class="exercise-list">
+            <h4 class="exercise-list-title">Exercises:</h4>
+            <div class="exercise-items">
+              <div v-for="(pair, index) in workout.pairs" :key="index" class="exercise-pair-compact">
+                <span class="exercise-compact">{{ pair.exerciseA.name }}</span>
+                <span class="exercise-separator">•</span>
+                <span class="exercise-compact">{{ pair.exerciseB.name }}</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       
@@ -56,6 +67,28 @@
       
       <div v-if="currentPhase === 'work'" class="exercise-display">
         <h2>{{ getCurrentExerciseName() }}</h2>
+        <div class="exercise-pair-display">
+          <div class="exercise-indicator">
+            <span :class="['exercise-label', { active: currentExercise === 'A' }]">
+              A: {{ selectedWorkout.pairs[currentPairIndex]?.exerciseA.name }}
+            </span>
+            <span :class="['exercise-label', { active: currentExercise === 'B' }]">
+              B: {{ selectedWorkout.pairs[currentPairIndex]?.exerciseB.name }}
+            </span>
+          </div>
+        </div>
+      </div>
+      
+      <div v-if="currentPhase === 'pairRest'" class="exercise-display">
+        <h3>Rest Time</h3>
+        <p>Get ready for the next exercise</p>
+        <div v-if="currentPairIndex + 1 < selectedWorkout.pairs.length" class="next-pair-preview">
+          <h4>Next Exercises:</h4>
+          <div class="next-exercises">
+            <span>A: {{ selectedWorkout.pairs[currentPairIndex + 1]?.exerciseA.name }}</span>
+            <span>B: {{ selectedWorkout.pairs[currentPairIndex + 1]?.exerciseB.name }}</span>
+          </div>
+        </div>
       </div>
       
       <div class="controls">
@@ -526,5 +559,104 @@ onUnmounted(() => {
   background-color: #e7f3ff;
   border-radius: 4px;
   text-align: center;
+}
+
+/* Exercise list styles for workout cards */
+.exercise-list {
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+}
+
+.exercise-list-title {
+  font-size: 0.9em;
+  font-weight: 600;
+  color: #555;
+  margin: 0 0 8px 0;
+}
+
+.exercise-items {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.exercise-pair-compact {
+  display: flex;
+  align-items: center;
+  font-size: 0.8em;
+  color: #666;
+  line-height: 1.3;
+}
+
+.exercise-compact {
+  color: #444;
+  font-weight: 500;
+}
+
+.exercise-separator {
+  margin: 0 6px;
+  color: #999;
+  font-weight: bold;
+}
+
+/* Exercise display styles for workout session */
+.exercise-pair-display {
+  margin-top: 20px;
+}
+
+.exercise-indicator {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.exercise-label {
+  background: #f8f9fa;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 0.9em;
+  font-weight: 500;
+  color: #666;
+  transition: all 0.3s ease;
+}
+
+.exercise-label.active {
+  background: #007bff;
+  color: white;
+  border-color: #007bff;
+  transform: scale(1.05);
+}
+
+.next-pair-preview {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.next-pair-preview h4 {
+  margin: 0 0 10px 0;
+  color: #555;
+  font-size: 1em;
+}
+
+.next-exercises {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.next-exercises span {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 0.9em;
+  color: #444;
 }
 </style>

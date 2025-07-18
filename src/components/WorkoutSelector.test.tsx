@@ -167,4 +167,42 @@ describe('WorkoutSelector', () => {
     const expectedTime = Math.ceil((workout.pairs.length * workout.rounds * 30 + workout.pairs.length * workout.restBetweenPairs) / 60);
     expect(screen.getByText(`Total time: ~${expectedTime} minutes`)).toBeInTheDocument();
   });
+
+  test('displays individual exercises in workout cards', () => {
+    render(<WorkoutSelector {...defaultProps} />);
+    
+    // Check that exercise list titles are present
+    const exerciseListTitles = screen.getAllByText('Exercises:');
+    expect(exerciseListTitles).toHaveLength(predefinedWorkouts.length);
+    
+    // Check that exercises from the first workout are displayed
+    const firstWorkout = predefinedWorkouts[0];
+    firstWorkout.pairs.forEach(pair => {
+      expect(screen.getByText(pair.exerciseA.name)).toBeInTheDocument();
+      expect(screen.getByText(pair.exerciseB.name)).toBeInTheDocument();
+    });
+  });
+
+  test('displays exercises for all 8 predefined workouts', () => {
+    render(<WorkoutSelector {...defaultProps} />);
+    
+    // Verify each workout displays its exercises
+    predefinedWorkouts.forEach(workout => {
+      workout.pairs.forEach(pair => {
+        expect(screen.getByText(pair.exerciseA.name)).toBeInTheDocument();
+        expect(screen.getByText(pair.exerciseB.name)).toBeInTheDocument();
+      });
+    });
+  });
+
+  test('formats exercise pairs with separator in workout cards', () => {
+    render(<WorkoutSelector {...defaultProps} />);
+    
+    // Check for exercise separators (bullet points)
+    const separators = screen.getAllByText('•');
+    
+    // Should have one separator per exercise pair across all workouts
+    const totalPairs = predefinedWorkouts.reduce((sum, workout) => sum + workout.pairs.length, 0);
+    expect(separators).toHaveLength(totalPairs);
+  });
 });

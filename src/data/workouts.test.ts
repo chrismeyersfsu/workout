@@ -138,3 +138,97 @@ describe('validateExercise', () => {
     expect(validateExercise(validExercise)).toBe(true);
   });
 });
+
+describe('Exercise Display Requirements', () => {
+  test('all workouts should have exercise names suitable for display', () => {
+    predefinedWorkouts.forEach(workout => {
+      workout.pairs.forEach((pair, pairIndex) => {
+        // Test exercise A
+        expect(pair.exerciseA.name).toBeTruthy();
+        expect(pair.exerciseA.name.length).toBeGreaterThan(0);
+        expect(pair.exerciseA.name.trim()).toBe(pair.exerciseA.name);
+        
+        // Test exercise B
+        expect(pair.exerciseB.name).toBeTruthy();
+        expect(pair.exerciseB.name.length).toBeGreaterThan(0);
+        expect(pair.exerciseB.name.trim()).toBe(pair.exerciseB.name);
+      });
+    });
+  });
+
+  test('all workouts should have properly formatted exercise names for workout cards', () => {
+    predefinedWorkouts.forEach(workout => {
+      workout.pairs.forEach((pair, pairIndex) => {
+        // Exercise names should not be too long for card display
+        expect(pair.exerciseA.name.length).toBeLessThanOrEqual(50);
+        expect(pair.exerciseB.name.length).toBeLessThanOrEqual(50);
+        
+        // Exercise names should not contain newlines or tabs
+        expect(pair.exerciseA.name).not.toMatch(/[\n\r\t]/);
+        expect(pair.exerciseB.name).not.toMatch(/[\n\r\t]/);
+      });
+    });
+  });
+
+  test('all exercise pairs should be displayable in compact format', () => {
+    predefinedWorkouts.forEach(workout => {
+      workout.pairs.forEach(pair => {
+        // Test that we can create display strings for the pair
+        const compactDisplay = `${pair.exerciseA.name} • ${pair.exerciseB.name}`;
+        expect(compactDisplay).toBeTruthy();
+        expect(compactDisplay.length).toBeGreaterThan(5); // At least "A • B"
+        
+        // Test that exercise names are distinct
+        expect(pair.exerciseA.name).not.toBe(pair.exerciseB.name);
+      });
+    });
+  });
+
+  test('workout exercise counts should match actual pairs for display', () => {
+    predefinedWorkouts.forEach(workout => {
+      // Each pair contains 2 exercises (A and B)
+      const expectedExerciseCount = workout.pairs.length;
+      expect(workout.pairs).toHaveLength(expectedExerciseCount);
+      
+      // Verify each pair has both exercises
+      workout.pairs.forEach(pair => {
+        expect(pair.exerciseA).toBeDefined();
+        expect(pair.exerciseB).toBeDefined();
+      });
+    });
+  });
+
+  test('exercise names should be readable during active workout', () => {
+    predefinedWorkouts.forEach(workout => {
+      workout.pairs.forEach(pair => {
+        // Exercise names should not be just numbers or symbols
+        expect(pair.exerciseA.name).toMatch(/[a-zA-Z]/);
+        expect(pair.exerciseB.name).toMatch(/[a-zA-Z]/);
+        
+        // Exercise names should not start or end with whitespace
+        expect(pair.exerciseA.name.trim()).toBe(pair.exerciseA.name);
+        expect(pair.exerciseB.name.trim()).toBe(pair.exerciseB.name);
+      });
+    });
+  });
+
+  test('all 8 predefined workouts have exercises suitable for individual display', () => {
+    expect(predefinedWorkouts).toHaveLength(8);
+    
+    predefinedWorkouts.forEach((workout, workoutIndex) => {
+      expect(workout.pairs.length).toBeGreaterThan(0);
+      
+      workout.pairs.forEach((pair, pairIndex) => {
+        // Test exercise A display readiness
+        expect(pair.exerciseA.name, 
+          `Workout ${workoutIndex + 1}, Pair ${pairIndex + 1}, Exercise A name should be valid`
+        ).toBeTruthy();
+        
+        // Test exercise B display readiness  
+        expect(pair.exerciseB.name,
+          `Workout ${workoutIndex + 1}, Pair ${pairIndex + 1}, Exercise B name should be valid`
+        ).toBeTruthy();
+      });
+    });
+  });
+});

@@ -37,6 +37,7 @@ This feature will create a tabata workout application designed for intermediate 
 11. The system must allow users to preview the complete exercise list for each workout before starting.
 12. The system must display the total workout time of each workout.
 13. The system must display the rest time of each workout.
+14. The system must display the individual exercises in each workout card and the workout progress screen.
 
 ## Non-Goals (Out of Scope)
 

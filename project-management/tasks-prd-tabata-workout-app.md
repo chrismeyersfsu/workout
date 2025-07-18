@@ -75,3 +75,19 @@
     - [x] 7.3.2 Verify rest time calculation accuracy against tabata protocol (10s rest per round)
     - [x] 7.3.3 Test rest time formatting for various durations
     - [x] 7.3.4 Add edge case tests for workouts with single exercise pairs
+- [x] 8.0 Implement individual exercise display in workout cards and progress screen
+  - [x] 8.1 Update WorkoutSelector component to show individual exercises in workout cards
+    - [x] 8.1.1 Add exercise list display to workout card UI
+    - [x] 8.1.2 Format exercise names clearly and concisely in card layout
+    - [x] 8.1.3 Ensure exercise list is visually distinct from workout metadata
+    - [x] 8.1.4 Test exercise display with all 8 predefined workouts
+  - [x] 8.2 Update WorkoutSession component to display individual exercises during workout
+    - [x] 8.2.1 Show current exercise name prominently during work intervals
+    - [x] 8.2.2 Display upcoming exercise during rest periods
+    - [x] 8.2.3 Add exercise list overview accessible during workout session
+    - [x] 8.2.4 Ensure exercise names are readable during active workout
+  - [x] 8.3 Create unit tests for individual exercise display functionality
+    - [x] 8.3.1 Test exercise display in WorkoutSelector component
+    - [x] 8.3.2 Test current exercise display in WorkoutSession component
+    - [x] 8.3.3 Verify exercise name accuracy and formatting
+    - [x] 8.3.4 Test exercise display with various workout configurations

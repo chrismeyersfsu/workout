@@ -39,6 +39,20 @@ const WorkoutCard: React.FC<WorkoutCardProps> = ({
         <span className="detail-item">Total: {formatWorkoutDuration(calculateWorkoutDuration(workout))}</span>
         <span className="detail-item">Rest: {formatRestTime(calculateRestTime(workout))}</span>
       </div>
+      
+      <div className="exercise-list">
+        <h4 className="exercise-list-title">Exercises:</h4>
+        <div className="exercise-items">
+          {workout.pairs.map((pair, index) => (
+            <div key={index} className="exercise-pair-compact">
+              <span className="exercise-compact">{pair.exerciseA.name}</span>
+              <span className="exercise-separator">•</span>
+              <span className="exercise-compact">{pair.exerciseB.name}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      
       <button 
         className="preview-button"
         onClick={(e) => {
