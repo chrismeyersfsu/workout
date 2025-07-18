@@ -46,6 +46,9 @@
     
     <div v-else class="workout-session-container">
       <div class="workout-header">
+        <button @click="toggleAudioControls" class="audio-button-top" title="Audio Settings">
+          🔊 Audio
+        </button>
         <h1>{{ selectedWorkout.name }}</h1>
         <button @click="exitWorkout" class="exit-button">Exit</button>
       </div>
@@ -86,16 +89,7 @@
       </div>
       
       <div class="controls">
-        <button v-if="!isActive && !isFinished" @click="startTimer" class="control-button">
-          {{ isPaused ? 'Resume' : 'Start' }}
-        </button>
-        <button v-if="isActive" @click="pauseTimer" class="control-button">Pause</button>
-        <button v-if="isPaused || isActive" @click="resetTimer" class="control-button">Reset</button>
-        
         <div class="audio-controls-section">
-          <button @click="toggleAudioControls" class="control-button audio-button">
-            🔊 Audio
-          </button>
           <div v-if="isMobile && audioSettings.enabled" class="mobile-audio-notice">
             📱 On mobile, tap "Test Audio" to ensure sounds work
           </div>
@@ -139,6 +133,18 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <div class="bottom-controls">
+        <button v-if="!isActive && !isFinished" @click="startTimer" class="bottom-button start-button">
+          {{ isPaused ? 'Resume' : 'Start' }}
+        </button>
+        <button v-if="isActive" @click="pauseTimer" class="bottom-button pause-button">
+          Pause
+        </button>
+        <button v-if="isPaused || isActive" @click="resetTimer" class="bottom-button reset-button">
+          Reset
+        </button>
       </div>
     </div>
   </div>
@@ -406,6 +412,92 @@ onUnmounted(() => {
   position: absolute;
   top: 20px;
   right: 20px;
+}
+
+.audio-button-top {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.audio-button-top:hover {
+  background-color: #5a6268;
+}
+
+.bottom-controls {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  padding: 15px;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  display: flex;
+  gap: 0;
+}
+
+.bottom-button {
+  flex: 1;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-radius: 0;
+  margin: 0;
+  padding: 12px 16px;
+  font-size: 16px;
+}
+
+.bottom-button:first-child {
+  border-radius: 8px 0 0 8px;
+}
+
+.bottom-button:last-child {
+  border-radius: 0 8px 8px 0;
+}
+
+.bottom-button:only-child {
+  border-radius: 8px;
+  padding: 15px 24px;
+  font-size: 18px;
+}
+
+
+
+.bottom-button.pause-button {
+  background-color: #ffc107;
+  color: #000;
+}
+
+.bottom-button.pause-button:hover {
+  background-color: #e0a800;
+}
+
+.bottom-button.reset-button {
+  background-color: #dc3545;
+}
+
+.bottom-button.reset-button:hover {
+  background-color: #c82333;
+}
+
+.bottom-button.start-button {
+  background-color: #28a745;
+}
+
+.bottom-button.start-button:hover {
+  background-color: #218838;
 }
 
 .exit-button:hover {
