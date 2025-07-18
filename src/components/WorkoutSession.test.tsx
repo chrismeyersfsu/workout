@@ -241,9 +241,9 @@ describe('WorkoutSession', () => {
       />
     );
 
-    expect(screen.getByText('REST BETWEEN PAIRS')).toBeInTheDocument();
+    expect(screen.getByText('REST BETWEEN EXERCISES')).toBeInTheDocument();
     expect(screen.getByText('Rest Time')).toBeInTheDocument();
-    expect(screen.getByText('Get ready for the next exercise pair')).toBeInTheDocument();
+    expect(screen.getByText('Get ready for the next exercise')).toBeInTheDocument();
   });
 
   test('shows next pair preview during pair rest', () => {
@@ -289,7 +289,7 @@ describe('WorkoutSession', () => {
     expect(screen.getByText("You've completed the Test Workout workout!")).toBeInTheDocument();
     
     // Check completion stats
-    expect(screen.getByText('2')).toBeInTheDocument(); // Exercise Pairs
+    expect(screen.getByText('2')).toBeInTheDocument(); // Exercises
     expect(screen.getByText('8')).toBeInTheDocument(); // Rounds Each
     expect(screen.getByText('16')).toBeInTheDocument(); // Total Rounds
   });

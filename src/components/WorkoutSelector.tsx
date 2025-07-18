@@ -34,7 +34,7 @@ const WorkoutCard: React.FC<WorkoutCardProps> = ({
       </div>
       <p className="workout-description">{workout.description}</p>
       <div className="workout-details">
-        <span className="detail-item">{workout.pairs.length} pairs</span>
+        <span className="detail-item">{workout.pairs.length} exercises</span>
         <span className="detail-item">{workout.rounds} rounds</span>
         <span className="detail-item">Total: {formatWorkoutDuration(calculateWorkoutDuration(workout))}</span>
         <span className="detail-item">Rest: {formatRestTime(calculateRestTime(workout))}</span>
@@ -71,7 +71,7 @@ const WorkoutPreview: React.FC<WorkoutPreviewProps> = ({ workout, onClose }) => 
             <strong>Rounds:</strong> {workout.rounds} × 20s work / 10s rest per exercise
           </div>
           <div className="detail">
-            <strong>Rest between pairs:</strong> {workout.restBetweenPairs} seconds
+            <strong>Rest between exercises:</strong> {workout.restBetweenPairs} seconds
           </div>
           <div className="detail">
             <strong>Total time:</strong> {formatWorkoutDuration(calculateWorkoutDuration(workout))}
@@ -81,10 +81,10 @@ const WorkoutPreview: React.FC<WorkoutPreviewProps> = ({ workout, onClose }) => 
           </div>
         </div>
         <div className="exercise-pairs">
-          <h3>Exercise Pairs</h3>
+          <h3>Exercises</h3>
           {workout.pairs.map((pair, index) => (
             <div key={index} className="exercise-pair">
-              <div className="pair-header">Pair {index + 1}</div>
+              <div className="pair-header">Exercise {index + 1}</div>
               <div className="exercises">
                 <div className="exercise">
                   <span className="exercise-label">A:</span>

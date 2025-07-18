@@ -16,7 +16,7 @@
           <h3>{{ workout.name }}</h3>
           <p>{{ workout.description }}</p>
           <div class="workout-details">
-            <span>{{ workout.pairs.length }} pairs</span>
+            <span>{{ workout.pairs.length }} exercises</span>
             <span>{{ workout.rounds }} rounds</span>
             <span>Rest: {{ workout.restBetweenPairs }}s</span>
             <span>{{ formatWorkoutDuration(calculateWorkoutDuration(workout)) }}</span>
@@ -50,7 +50,7 @@
         </div>
         <div class="progress">
           Round {{ currentRound }} of {{ selectedWorkout.rounds }} | 
-          Pair {{ currentPairIndex + 1 }} of {{ selectedWorkout.pairs.length }}
+          Exercise {{ currentPairIndex + 1 }} of {{ selectedWorkout.pairs.length }}
         </div>
       </div>
       
@@ -69,6 +69,9 @@
           <button @click="toggleAudioControls" class="control-button audio-button">
             🔊 Audio
           </button>
+          <div v-if="isMobile && audioSettings.enabled" class="mobile-audio-notice">
+            📱 On mobile, tap "Test Audio" to ensure sounds work
+          </div>
           
           <div v-if="showAudioControls" class="audio-controls">
             <div class="audio-control-header">
@@ -104,7 +107,7 @@
             
             <div v-if="audioSettings.enabled" class="audio-control-row">
               <button @click="testAudio" class="control-button test-audio-button">
-                Test Audio
+                {{ isMobile ? '📱 Test Audio (Required for Mobile)' : 'Test Audio' }}
               </button>
             </div>
           </div>
@@ -144,13 +147,20 @@ const showAudioControls = ref(false)
 // Track previous phase for audio cues
 const previousPhase = ref<'work' | 'rest' | 'pairRest' | 'finished'>('work')
 
-const selectWorkout = (workoutId: string) => {
+// Mobile detection
+const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+
+const selectWorkout = async (workoutId: string) => {
   selectedWorkoutId.value = workoutId
+  // Initialize audio on any user interaction to prepare for mobile
+  await audioManager.initializeAudioOnUserInteraction()
 }
 
-const startWorkout = () => {
+const startWorkout = async () => {
   const workout = workouts.value.find(w => w.id === selectedWorkoutId.value)
   if (workout) {
+    // Initialize audio on mobile when starting workout
+    await audioManager.initializeAudioOnUserInteraction()
     selectedWorkout.value = workout
     resetTimer()
   }
@@ -506,5 +516,15 @@ onUnmounted(() => {
 
 .audio-button:hover {
   background-color: #5a6268;
+}
+
+.mobile-audio-notice {
+  font-size: 12px;
+  color: #007bff;
+  margin-top: 5px;
+  padding: 5px;
+  background-color: #e7f3ff;
+  border-radius: 4px;
+  text-align: center;
 }
 </style>

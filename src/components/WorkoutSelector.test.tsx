@@ -35,7 +35,7 @@ describe('WorkoutSelector', () => {
     
     const firstWorkout = predefinedWorkouts[0];
     expect(screen.getByText(firstWorkout.description!)).toBeInTheDocument();
-    expect(screen.getByText(`${firstWorkout.pairs.length} pairs`)).toBeInTheDocument();
+    expect(screen.getByText(`${firstWorkout.pairs.length} exercises`)).toBeInTheDocument();
     expect(screen.getByText(`${firstWorkout.rounds} rounds`)).toBeInTheDocument();
     expect(screen.getByText(`${firstWorkout.restBetweenPairs}s rest`)).toBeInTheDocument();
   });
@@ -87,7 +87,7 @@ describe('WorkoutSelector', () => {
     fireEvent.click(previewButtons[0]);
     
     expect(screen.getByText(predefinedWorkouts[0].name)).toBeInTheDocument();
-    expect(screen.getByText('Exercise Pairs')).toBeInTheDocument();
+    expect(screen.getByText('Exercises')).toBeInTheDocument();
   });
 
   test('preview shows correct workout details', () => {
@@ -117,7 +117,7 @@ describe('WorkoutSelector', () => {
     fireEvent.click(closeButton);
     
     await waitFor(() => {
-      expect(screen.queryByText('Exercise Pairs')).not.toBeInTheDocument();
+      expect(screen.queryByText('Exercises')).not.toBeInTheDocument();
     });
   });
 
@@ -131,7 +131,7 @@ describe('WorkoutSelector', () => {
     fireEvent.click(overlay!);
     
     await waitFor(() => {
-      expect(screen.queryByText('Exercise Pairs')).not.toBeInTheDocument();
+      expect(screen.queryByText('Exercises')).not.toBeInTheDocument();
     });
   });
 
@@ -144,7 +144,7 @@ describe('WorkoutSelector', () => {
     const previewContent = document.querySelector('.workout-preview');
     fireEvent.click(previewContent!);
     
-    expect(screen.getByText('Exercise Pairs')).toBeInTheDocument();
+    expect(screen.getByText('Exercises')).toBeInTheDocument();
   });
 
   test('prevents workout selection when preview button is clicked', () => {

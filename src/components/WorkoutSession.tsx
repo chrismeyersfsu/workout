@@ -110,7 +110,7 @@ export const WorkoutSession: React.FC<WorkoutSessionProps> = ({
       case 'rest':
         return 'REST';
       case 'pairRest':
-        return 'REST BETWEEN PAIRS';
+        return 'REST BETWEEN EXERCISES';
       case 'finished':
         return 'WORKOUT COMPLETE!';
       default:
@@ -142,7 +142,7 @@ export const WorkoutSession: React.FC<WorkoutSessionProps> = ({
         <div className="workout-info">
           <h1>{workout.name}</h1>
           <div className="workout-progress">
-            <span>Pair {timerState.currentPairIndex + 1} of {workout.pairs.length}</span>
+            <span>Exercise {timerState.currentPairIndex + 1} of {workout.pairs.length}</span>
             <span>•</span>
             <span>Round {timerState.currentRound} of {workout.rounds}</span>
           </div>
@@ -229,7 +229,7 @@ export const WorkoutSession: React.FC<WorkoutSessionProps> = ({
       {timerState.currentPhase === 'pairRest' && (
         <div className="rest-display">
           <h3>Rest Time</h3>
-          <p>Get ready for the next exercise pair</p>
+          <p>Get ready for the next exercise</p>
           {timerState.currentPairIndex + 1 < workout.pairs.length && (
             <div className="next-pair-preview">
               <h4>Next Exercises:</h4>
@@ -249,7 +249,7 @@ export const WorkoutSession: React.FC<WorkoutSessionProps> = ({
           <div className="completion-stats">
             <div className="stat">
               <span className="stat-value">{workout.pairs.length}</span>
-              <span className="stat-label">Exercise Pairs</span>
+              <span className="stat-label">Exercises</span>
             </div>
             <div className="stat">
               <span className="stat-value">{workout.rounds}</span>
