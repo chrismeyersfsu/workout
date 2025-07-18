@@ -16,6 +16,11 @@ class AudioManager {
   constructor() {
     this.loadSettings();
     this.initializeAudioContext();
+    
+    // Log mobile detection for debugging
+    if (this.isMobile()) {
+      console.log('Mobile device detected, will use enhanced audio initialization');
+    }
   }
 
   private initializeAudioContext(): void {
@@ -69,13 +74,46 @@ class AudioManager {
       this.initializeAudioContext();
     }
     
-    if (this.audioContext && this.audioContext.state === 'suspended') {
+    if (this.audioContext) {
       try {
-        await this.audioContext.resume();
+        // For mobile browsers, always try to resume the context
+        if (this.audioContext.state === 'suspended' || this.audioContext.state === 'interrupted') {
+          await this.audioContext.resume();
+          console.log('Audio context resumed on user interaction');
+        }
+        
+        // Play a silent sound to "unlock" audio on mobile devices
+        await this.playUnlockSound();
         console.log('Audio context initialized on user interaction');
       } catch (error) {
         console.warn('Failed to initialize audio on user interaction:', error);
       }
+    }
+  }
+
+  private async playUnlockSound(): Promise<void> {
+    if (!this.audioContext) return;
+    
+    try {
+      const oscillator = this.audioContext.createOscillator();
+      const gainNode = this.audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(this.audioContext.destination);
+      
+      // Silent sound to unlock audio
+      gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
+      oscillator.frequency.setValueAtTime(440, this.audioContext.currentTime);
+      
+      oscillator.start(this.audioContext.currentTime);
+      oscillator.stop(this.audioContext.currentTime + 0.01);
+      
+      // Wait for the sound to finish
+      await new Promise(resolve => {
+        oscillator.onended = () => resolve(undefined);
+      });
+    } catch (error) {
+      console.warn('Failed to play unlock sound:', error);
     }
   }
 
@@ -84,10 +122,10 @@ class AudioManager {
       this.initializeAudioContext();
     }
 
-    if (this.audioContext && this.audioContext.state === 'suspended') {
+    if (this.audioContext && (this.audioContext.state === 'suspended' || this.audioContext.state === 'interrupted')) {
       try {
         await this.audioContext.resume();
-        console.log('Audio context resumed successfully');
+        console.log('Audio context resumed successfully, state:', this.audioContext.state);
       } catch (error) {
         console.warn('Failed to resume audio context:', error);
         throw error;
@@ -151,6 +189,10 @@ class AudioManager {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
+  private isMobile(): boolean {
+    return /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+
   public async playCue(type: AudioCueType): Promise<void> {
     if (!this.settings.enabled) return;
 
@@ -209,6 +251,11 @@ class AudioManager {
 
   public async testAudio(): Promise<boolean> {
     try {
+      // For mobile devices, always ensure audio context is properly initialized
+      if (this.isMobile()) {
+        await this.initializeAudioOnUserInteraction();
+      }
+      
       await this.playCue('workStart');
       return true;
     } catch (error) {
