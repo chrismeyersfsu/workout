@@ -53,12 +53,6 @@
       <div class="timer-display">
         <div class="time">{{ formatTime(timeRemaining) }}</div>
         <div class="phase">{{ currentPhase.toUpperCase() }}</div>
-        <div v-if="currentPhase === 'rest'" class="rest-info">
-          Rest Time: {{ formatTime(timeRemaining) }}
-        </div>
-        <div v-if="currentPhase === 'pairRest'" class="rest-info">
-          Rest Between Pairs: {{ formatTime(timeRemaining) }}
-        </div>
         <div class="progress">
           Round {{ currentRound }} of {{ selectedWorkout.rounds }} | 
           Exercise {{ currentPairIndex + 1 }} of {{ selectedWorkout.pairs.length }}
