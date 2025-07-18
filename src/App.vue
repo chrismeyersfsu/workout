@@ -63,7 +63,6 @@
       </div>
       
       <div v-if="currentPhase === 'work'" class="exercise-display">
-        <h2>{{ getCurrentExerciseName() }}</h2>
         <div class="exercise-pair-display">
           <div class="exercise-indicator">
             <span :class="['exercise-label', { active: currentExercise === 'A' }]">

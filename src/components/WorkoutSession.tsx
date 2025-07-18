@@ -139,6 +139,13 @@ export const WorkoutSession: React.FC<WorkoutSessionProps> = ({
   return (
     <div className={`workout-session ${timerState.currentPhase}`}>
       <div className="workout-session-header">
+        <button 
+          className="audio-button-top" 
+          onClick={() => setShowAudioControls(!showAudioControls)}
+          title="Audio Settings"
+        >
+          🔊 Audio
+        </button>
         <div className="workout-info">
           <h1>{workout.name}</h1>
           <div className="workout-progress">
@@ -208,13 +215,6 @@ export const WorkoutSession: React.FC<WorkoutSessionProps> = ({
 
       {timerState.currentPhase !== 'finished' && timerState.currentPhase !== 'pairRest' && (
         <div className="exercise-display">
-          <div className="current-exercise">
-            <h3>{getCurrentExerciseName()}</h3>
-            {getCurrentExerciseDescription() && (
-              <p className="exercise-description">{getCurrentExerciseDescription()}</p>
-            )}
-          </div>
-          
           <div className="exercise-indicator">
             <span className={`exercise-label ${currentExercise === 'A' ? 'active' : ''}`}>
               A: {getCurrentPair()?.exerciseA.name}
@@ -264,33 +264,6 @@ export const WorkoutSession: React.FC<WorkoutSessionProps> = ({
       )}
 
       <div className="workout-controls">
-        {!timerState.isActive && !isWorkoutComplete && (
-          <button 
-            className="control-button start-button" 
-            onClick={handleStartTimer}
-          >
-            {timerState.isPaused ? 'Resume' : 'Start'}
-          </button>
-        )}
-        
-        {timerState.isActive && (
-          <button 
-            className="control-button pause-button" 
-            onClick={pauseTimer}
-          >
-            Pause
-          </button>
-        )}
-        
-        {(timerState.isPaused || timerState.isActive) && (
-          <button 
-            className="control-button reset-button" 
-            onClick={resetTimer}
-          >
-            Reset
-          </button>
-        )}
-
         {isWorkoutComplete && (
           <button 
             className="control-button restart-button" 
@@ -299,16 +272,35 @@ export const WorkoutSession: React.FC<WorkoutSessionProps> = ({
             Do Again
           </button>
         )}
+      </div>
 
-        <div className="secondary-controls">
+      <div className="bottom-controls">
+        {!timerState.isActive && !isWorkoutComplete && (
           <button 
-            className="control-button audio-toggle-button" 
-            onClick={() => setShowAudioControls(!showAudioControls)}
-            title="Audio Settings"
+            className="bottom-button start-button" 
+            onClick={handleStartTimer}
           >
-            🔊 Audio
+            {timerState.isPaused ? 'Resume' : 'Start'}
           </button>
-        </div>
+        )}
+        
+        {timerState.isActive && (
+          <button 
+            className="bottom-button pause-button" 
+            onClick={pauseTimer}
+          >
+            Pause
+          </button>
+        )}
+        
+        {(timerState.isPaused || timerState.isActive) && (
+          <button 
+            className="bottom-button reset-button" 
+            onClick={resetTimer}
+          >
+            Reset
+          </button>
+        )}
       </div>
 
       {showAudioControls && (
