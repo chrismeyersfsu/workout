@@ -213,13 +213,13 @@ export const WorkoutSession: React.FC<WorkoutSessionProps> = ({
         <h2 className="phase-text">{getPhaseDisplayText()}</h2>
       </div>
 
-      {timerState.currentPhase !== 'finished' && timerState.currentPhase !== 'pairRest' && (
+      {timerState.currentPhase !== 'finished' && (
         <div className="exercise-display">
           <div className="exercise-indicator">
-            <span className={`exercise-label ${currentExercise === 'A' ? 'active' : ''}`}>
+            <span className={`exercise-label ${timerState.currentPhase === 'work' && currentExercise === 'A' ? 'active' : ''}`}>
               A: {getCurrentPair()?.exerciseA.name}
             </span>
-            <span className={`exercise-label ${currentExercise === 'B' ? 'active' : ''}`}>
+            <span className={`exercise-label ${timerState.currentPhase === 'work' && currentExercise === 'B' ? 'active' : ''}`}>
               B: {getCurrentPair()?.exerciseB.name}
             </span>
           </div>

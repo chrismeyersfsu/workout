@@ -62,13 +62,13 @@
         </div>
       </div>
       
-      <div v-if="currentPhase === 'work'" class="exercise-display">
+      <div v-if="currentPhase === 'work' || currentPhase === 'rest'" class="exercise-display">
         <div class="exercise-pair-display">
           <div class="exercise-indicator">
-            <span :class="['exercise-label', { active: currentExercise === 'A' }]">
+            <span :class="['exercise-label', { active: currentPhase === 'work' && currentExercise === 'A' }]">
               A: {{ selectedWorkout.pairs[currentPairIndex]?.exerciseA.name }}
             </span>
-            <span :class="['exercise-label', { active: currentExercise === 'B' }]">
+            <span :class="['exercise-label', { active: currentPhase === 'work' && currentExercise === 'B' }]">
               B: {{ selectedWorkout.pairs[currentPairIndex]?.exerciseB.name }}
             </span>
           </div>
